@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "me.bscal.healthy.common.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "ModelLoaderMixin",
+    "PlayerTickEventMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

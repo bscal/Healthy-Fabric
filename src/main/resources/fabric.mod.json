@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "healthy",
+  "version": "${version}",
+  "name": "Healthy",
+  "description": "Overhauls health and healing",
+  "authors": [
+    "bscal"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/healthy/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "me.bscal.healthy.client.HealthyClient"
+    ],
+    "main": [
+      "me.bscal.healthy.Healthy"
+    ],
+    "cardinal-components-entity": [
+      "me.bscal.healthy.common.components.health.HealthProvider"
+    ]
+  },
+  "mixins": [
+    "healthy.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.11.2",
+    "fabric": "*",
+    "minecraft": "1.16.5"
+  },
+  "custom": {
+    "cardinal-components": [
+      "healthy:health"
+    ]
+  }
+}
