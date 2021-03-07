@@ -10,6 +10,6 @@ public class ServerStartedListener implements ServerLifecycleEvents.ServerStarte
 	@Override
 	public void onServerStarted(MinecraftServer server)
 	{
-		server.getGameRules().get(GameRules.NATURAL_REGENERATION).set(false, server);
+		server.getGameRules().get(GameRules.NATURAL_REGENERATION).set(true, server);
 	}
 }
