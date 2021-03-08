@@ -1,6 +1,8 @@
 package me.bscal.healthy.common.components.health;
 
 import dev.onyxstudios.cca.api.v3.component.ComponentV3;
+import me.bscal.healthy.common.components.buff.IBuff;
+import net.minecraft.entity.LivingEntity;
 
 public interface IHealthComponent extends ComponentV3
 {
@@ -11,14 +13,9 @@ public interface IHealthComponent extends ComponentV3
 	void AddHealing(Heal heal);
 
 	/**
-	 * Returns true if the player can be healed. This is not relevant if trying to add a heal to the player.
-	 */
-	boolean CanConsume(int currentTickCount);
-
-	/**
 	 * Process and update healing.
 	 */
-	float ConsumeHealing();
+	void UpdateHealth(LivingEntity entity);
 
 	/**
 	 * Sets and overrides current healing.

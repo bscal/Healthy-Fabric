@@ -16,13 +16,7 @@ public class PlayerTickListener implements PlayerTickCallback
 		if (!player.world.isClient && player.getServer() != null)
 		{
 			IHealthComponent health = HealthProvider.HEALTH.get(player);
-
-			if (health.CanConsume(player.getServer().getTicks()))
-			{
-				player.heal(health.ConsumeHealing());
-
-				Healthy.LOGGER.log(Level.INFO,"Consuming health.");
-			}
+			health.UpdateHealth(player);
 		}
 		return ActionResult.PASS;
 	}

@@ -1,5 +1,6 @@
 package me.bscal.healthy.common.components.health;
 
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundTag;
 
 public class HealthComponent implements IHealthComponent
@@ -19,22 +20,15 @@ public class HealthComponent implements IHealthComponent
 	}
 
 	@Override
-	public boolean CanConsume(int currentTickCount)
+	public void UpdateHealth(LivingEntity entity)
 	{
-		return m_heal != null && currentTickCount % m_heal.ticksPerUpdate == 0 && m_heal.durationInTicks > 0 && !m_heal.finished;
-	}
+		if (m_heal != null && m_heal.CanUpdate(entity))
+		{
+			m_heal.Update(entity);
 
-	@Override
-	public float ConsumeHealing()
-	{
-		float healing = 0;
-
-		healing += m_heal.Consume();
-
-		if (m_heal.finished)
-			m_canReceiveHealing = true;
-
-		return healing;
+			if (m_heal.finished)
+				m_canReceiveHealing = true;
+		}
 	}
 
 	@Override
@@ -65,25 +59,23 @@ public class HealthComponent implements IHealthComponent
 	@Override
 	public void readFromNbt(CompoundTag tag)
 	{
-		m_heal = new Heal();
-		m_heal.totalHealing = tag.getFloat("totalHealing");
-		m_heal.healingPerUpdate = tag.getFloat("healingPerUpdate");
-		m_heal.durationInTicks = tag.getInt("duration");
-		m_heal.ticksPerUpdate = tag.getInt("ticksPerUpdate");
+		if (tag.contains("heal"))
+		{
+			m_heal = new Heal();
+			m_heal.Read(tag);
+		}
+
+
 		m_canReceiveHealing = tag.getBoolean("canReceive");
+
 	}
 
 	@Override
 	public void writeToNbt(CompoundTag tag)
 	{
-		if (m_heal == null || m_heal.finished)
-			return;
+		if (m_heal != null && !m_heal.finished)
+			m_heal.Write(tag);
 
-		tag.putFloat("totalHealing", m_heal.totalHealing);
-		tag.putFloat("healingPerUpdate", m_heal.healingPerUpdate);
-		tag.putInt("duration", m_heal.durationInTicks);
-		tag.putInt("ticksPerUpdate", m_heal.ticksPerUpdate);
 		tag.putBoolean("canReceive", m_canReceiveHealing);
 	}
-
 }
