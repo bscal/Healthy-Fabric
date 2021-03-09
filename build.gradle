@@ -15,6 +15,7 @@ repositories {
         name = "Ladysnake Libs"
         url = "https://dl.bintray.com/ladysnake/libs"
     }
+    mavenCentral()
 }
 
 dependencies {
@@ -34,6 +35,9 @@ dependencies {
     include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:2.7.12"
     modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:2.7.12"
     include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:2.7.12"
+
+    modImplementation 'com.oroarmor:oro-config-fabric:2.0.0'
+    include 'com.oroarmor:oro-config-fabric:2.0.0'
 }
 
 processResources {
