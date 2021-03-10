@@ -9,6 +9,5 @@ import net.fabricmc.api.Environment;
 	@Override
 	public void onInitializeClient()
 	{
-
 	}
 }

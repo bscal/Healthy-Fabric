@@ -1,4 +1,4 @@
-package me.bscal.healthy.common.components.config;
+package me.bscal.healthy.common.config;
 
 import com.oroarmor.config.Config;
 import com.oroarmor.config.ConfigItem;

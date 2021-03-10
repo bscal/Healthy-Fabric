@@ -1,5 +1,9 @@
 package me.bscal.healthy;
 
+import com.oroarmor.config.Config;
+import me.bscal.healthy.common.commands.BasicCommands;
+import me.bscal.healthy.common.components.injuries.InjuryRegistry;
+import me.bscal.healthy.common.config.HealthyConfig;
 import me.bscal.healthy.common.events.PlayerTickListener;
 import me.bscal.healthy.common.events.ServerStartedListener;
 import me.bscal.healthy.common.events.callbacks.PlayerTickCallback;
@@ -15,13 +19,23 @@ public class Healthy implements ModInitializer
 	public static final String MOD_NAME = "Healthy";
 	public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
 	public static final boolean DEBUG = true;
+	public static final Config CONFIG = new HealthyConfig();
 
 	@Override
 	public void onInitialize()
 	{
+		CONFIG.readConfigFromFile();
+
 		ItemRegistry.Register();
 
 		ServerLifecycleEvents.SERVER_STARTED.register(new ServerStartedListener());
 		PlayerTickCallback.EVENT.register(new PlayerTickListener());
+		ServerLifecycleEvents.SERVER_STOPPED.register((instance) -> CONFIG.saveConfigToFile());
+
+		InjuryRegistry.Register();
+
+		BasicCommands cmds = new BasicCommands();
+		cmds.Register();
+
 	}
 }
