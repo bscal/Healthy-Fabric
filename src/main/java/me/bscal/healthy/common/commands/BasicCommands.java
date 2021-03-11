@@ -1,20 +1,20 @@
 package me.bscal.healthy.common.commands;
 
-import static net.minecraft.server.command.CommandManager.literal;
-
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.tree.CommandNode;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import com.mojang.brigadier.tree.RootCommandNode;
 import me.bscal.healthy.Healthy;
 import me.bscal.healthy.client.gui.HealthyGUI;
 import me.bscal.healthy.client.gui.HealthyScreen;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.entity.player.HungerManager;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.LiteralText;
 
-import java.util.Objects;
+import static net.minecraft.server.command.CommandManager.literal;
 
 public class BasicCommands
 {
@@ -25,30 +25,22 @@ public class BasicCommands
 			CommandNode<ServerCommandSource> healthyCommand = dispatcher.register(
 					literal("healthy").executes(this::DefaultCommand));
 
-			LiteralCommandNode<ServerCommandSource> build = literal("ui").executes(this::UICommand).build();
-
-			healthyCommand.addChild(build);
+			LiteralCommandNode<ServerCommandSource> uiCommand = literal("ui").executes(
+					this::UICommand).build();
+			healthyCommand.addChild(uiCommand);
+			LiteralCommandNode<ServerCommandSource> healCommand = literal("heal").executes(
+					this::HealCommand).build();
+			healthyCommand.addChild(healCommand);
+			LiteralCommandNode<ServerCommandSource> pDebugCommand = literal("pdebug").executes(
+					this::PDebugCommand).build();
+			healthyCommand.addChild(pDebugCommand);
 
 		}));
 	}
 
-	public void RegisterServer(MinecraftServer server)
+	private int DefaultCommand(
+			CommandContext<ServerCommandSource> serverCommandSourceCommandContext)
 	{
-		final boolean dedicated = server.isDedicated();
-		final RootCommandNode<ServerCommandSource> root = server.getCommandManager()
-				.getDispatcher()
-				.getRoot();
-
-		CommandNode<ServerCommandSource> healthyCommand = root.getChild("healthy");
-
-		CommandNode<ServerCommandSource> healthyUICommand = root.getChild("ui");
-		healthyCommand.addChild(healthyUICommand);
-
-	}
-
-	private int DefaultCommand(CommandContext<ServerCommandSource> serverCommandSourceCommandContext)
-	{
-		Healthy.LOGGER.info("TESTING");
 		return 1;
 	}
 
@@ -57,6 +49,46 @@ public class BasicCommands
 		if (!ctx.getSource().getMinecraftServer().isDedicated())
 		{
 			MinecraftClient.getInstance().openScreen(new HealthyScreen(new HealthyGUI()));
+		}
+		return 1;
+	}
+
+	private int PDebugCommand(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException
+	{
+		if (!ctx.getSource().getMinecraftServer().isDedicated() && !ctx.getSource()
+				.getWorld().isClient)
+		{
+			ServerPlayerEntity p = ctx.getSource().getPlayer();
+			HungerManager hm = p.getHungerManager();
+			p.sendMessage(new LiteralText(
+					String.format("HP: %.3f/%.3f (%.3f)", p.getHealth(), p.getMaxHealth(),
+							p.getAbsorptionAmount())), false);
+			p.sendMessage(new LiteralText(String.format("Food: %d | Sat: %.3f", hm.getFoodLevel(),
+					hm.getSaturationLevel())), false);
+
+			Healthy.LOGGER.info(
+					String.format("HP: %.3f/%.3f (%.3f)", p.getHealth(), p.getMaxHealth(),
+							p.getAbsorptionAmount()));
+			Healthy.LOGGER.info(String.format("Food: %d | Sat: %.3f", hm.getFoodLevel(),
+					hm.getSaturationLevel()));
+		}
+
+		return 1;
+	}
+
+	private int HealCommand(CommandContext<ServerCommandSource> ctx)
+	{
+		if (!ctx.getSource().getWorld().isClient)
+		{
+			try
+			{
+				ServerPlayerEntity player = ctx.getSource().getPlayer();
+				player.setHealth(player.getMaxHealth());
+			}
+			catch (CommandSyntaxException e)
+			{
+				e.printStackTrace();
+			}
 		}
 
 		return 1;

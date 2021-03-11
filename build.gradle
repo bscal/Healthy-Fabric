@@ -15,6 +15,10 @@ repositories {
         name = "Ladysnake Libs"
         url = "https://dl.bintray.com/ladysnake/libs"
     }
+    maven {
+        name = "CottonMC"
+        url = "https://server.bbkr.space/artifactory/libs-release"
+    }
     mavenCentral()
 }
 
@@ -38,6 +42,8 @@ dependencies {
 
     modImplementation 'com.oroarmor:oro-config-fabric:2.0.0'
     include 'com.oroarmor:oro-config-fabric:2.0.0'
+
+    modImplementation include("io.github.cottonmc:LibGui:3.3.5+1.16.5")
 }
 
 processResources {

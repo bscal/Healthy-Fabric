@@ -15,8 +15,6 @@ import net.minecraft.util.Identifier;
 public class HealthyGUI extends LightweightGuiDescription
 {
 
-	public static final NinePatch BORDER = new NinePatch(new Identifier(Healthy.MOD_ID, "textures/gui/prog_border.png"), 2, 0.125f);
-
 	private static final Texture BAR = new Texture(new Identifier(Healthy.MOD_ID, "textures/gui/prog_bar.png"));
 	private static final Texture BG = new Texture(new Identifier(Healthy.MOD_ID, "textures/gui/prog_bg.png"));
 
@@ -32,9 +30,8 @@ public class HealthyGUI extends LightweightGuiDescription
 
 		WBox box = new WBox(Axis.HORIZONTAL);
 		box.setSize(80, 24);
-		box.setBackgroundPainter(BORDER);
+		box.setBackgroundPainter(BackgroundPainter.createNinePatch(new Identifier(Healthy.MOD_ID, "textures/gui/prog_border.png"), 2));
 		box.add(hpBar, 80, 24);
-		box.setSpacing(2);
 		root.add(box,1, 1);
 
 		WLabel label = new WLabel("HP");
