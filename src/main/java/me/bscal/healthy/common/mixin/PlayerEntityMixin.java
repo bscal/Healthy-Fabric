@@ -1,17 +1,22 @@
 package me.bscal.healthy.common.mixin;
 
+import me.bscal.healthy.common.events.callbacks.PlayerSleepCallback;
+import me.bscal.healthy.common.events.callbacks.PlayerTickCallback;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.HungerManager;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.ActionResult;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.GameRules;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(PlayerEntity.class) abstract class PlayerEntityUpdateMixin
+@Mixin(PlayerEntity.class)
+abstract class PlayerEntityMixin
 {
 	/**
 	 * Overrides PlayerEntity:canFoodHeal to return default impl and if heal is below 25% of max hp.
@@ -103,7 +108,30 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 		{
 			hungerAccessor.SetFoodStarvationTimer(0);
 		}
+	}
 
+	/*
+	 *  ******************************
+	 *  * Custom PlayerEntity Events *
+	 *  ******************************
+	 */
+
+	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;updateWaterSubmersionState()Z"), method = "tick", cancellable = false)
+	public void tick(CallbackInfo cb)
+	{
+		PlayerEntity player = (PlayerEntity) (Object) this;
+		PlayerTickCallback.EVENT.invoker().tick(player);
+	}
+
+	@Inject(method = "wakeUp(ZZ)V", at = @At(value = "HEAD"), cancellable = true)
+	public void wakeUp(boolean bl, boolean updateSleepingPlayers, CallbackInfo cb)
+	{
+		PlayerEntity player = (PlayerEntity) (Object) this;
+		ActionResult result = PlayerSleepCallback.EVENT.invoker().onSleep(player, player.world);
+		if (result == ActionResult.FAIL)
+		{
+			cb.cancel();
+		}
 	}
 
 }
