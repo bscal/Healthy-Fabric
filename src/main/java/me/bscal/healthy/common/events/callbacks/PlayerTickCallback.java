@@ -7,14 +7,17 @@ import net.minecraft.util.ActionResult;
 
 public interface PlayerTickCallback
 {
+	/**
+	 * Callback for PlayerEntity onTick
+	 * Called before super.tick but after updateWaterSubmersionState.
+	 * Upon return:
+	 * - SUCCESS PASS FAIL do nothing.
+	 */
 	Event<PlayerTickCallback> EVENT = EventFactory.createArrayBacked(PlayerTickCallback.class,
 			(listeners) -> (player) -> {
 				for (PlayerTickCallback listener : listeners)
 				{
 					ActionResult res = listener.tick(player);
-
-					if (res != ActionResult.PASS)
-						return res;
 				}
 
 				return ActionResult.PASS;
