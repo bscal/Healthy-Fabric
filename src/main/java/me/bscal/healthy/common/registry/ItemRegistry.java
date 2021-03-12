@@ -1,6 +1,7 @@
 package me.bscal.healthy.common.registry;
 
 import me.bscal.healthy.Healthy;
+import me.bscal.healthy.common.components.injuries.InjuryRegistry;
 import me.bscal.healthy.common.items.Bandage;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.Item;

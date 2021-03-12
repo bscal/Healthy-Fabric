@@ -1,10 +1,13 @@
 package me.bscal.healthy.common.components.health;
 
+import me.bscal.healthy.Healthy;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundTag;
 
 public class HealthComponent implements IHealthComponent
 {
+
+	public static final String HP_REGEN_KEY = "regen_tag";
 
 	private Heal m_heal;
 	private boolean m_canReceiveHealing = true;
@@ -59,14 +62,12 @@ public class HealthComponent implements IHealthComponent
 	@Override
 	public void readFromNbt(CompoundTag tag)
 	{
-		if (tag.contains("heal"))
+		if (tag.contains(HP_REGEN_KEY))
 		{
-			m_heal = new Heal();
-			m_heal.Read(tag);
+			Heal heal = new Heal();
+			heal.Read((CompoundTag) tag.get(HP_REGEN_KEY));
+			AddHealing(heal);
 		}
-
-
-		m_canReceiveHealing = tag.getBoolean("canReceive");
 
 	}
 
@@ -74,8 +75,10 @@ public class HealthComponent implements IHealthComponent
 	public void writeToNbt(CompoundTag tag)
 	{
 		if (m_heal != null && !m_heal.finished)
-			m_heal.Write(tag);
-
-		tag.putBoolean("canReceive", m_canReceiveHealing);
+		{
+			CompoundTag healTag = new CompoundTag();
+			m_heal.Write(healTag);
+			tag.put(HP_REGEN_KEY, healTag);
+		}
 	}
 }

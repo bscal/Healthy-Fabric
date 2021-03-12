@@ -2,8 +2,10 @@ package me.bscal.healthy.common.items;
 
 import me.bscal.healthy.Healthy;
 import me.bscal.healthy.common.components.health.Heal;
+import me.bscal.healthy.common.components.health.HealthComponent;
 import me.bscal.healthy.common.components.health.HealthProvider;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -42,10 +44,11 @@ public class Bandage extends Item
 
 			if (Healthy.DEBUG)
 			{
-				serverUser.setHealth(Math.max(0f, serverUser.getHealth() - 10f));
+				serverUser.damage(DamageSource.MAGIC, 10f);
 			}
 
-			HealthProvider.HEALTH.get(serverUser).AddHealing(Heal.Builder(10, 10 * 20, 20));
+			HealthProvider.HEALTH.get(serverUser)
+					.AddHealing(Heal.Builder(10, 10 * 20, 20));
 
 			stack.decrement(1);
 		}

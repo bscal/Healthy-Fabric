@@ -1,5 +1,6 @@
 package me.bscal.healthy.common.components.health;
 
+import me.bscal.healthy.Healthy;
 import me.bscal.healthy.common.components.buff.IBuff;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundTag;
@@ -62,15 +63,20 @@ public class Heal implements IBuff
 	@Override
 	public boolean CanUpdate(LivingEntity entity)
 	{
-		return Objects.requireNonNull(entity.getServer()).getTicks() % ticksPerUpdate == 0 && remainingDuration > 0;
+		return Healthy.GetServer().getTicks() % Math.max(1, ticksPerUpdate) == 0;
 	}
 
 	@Override
 	public void Update(LivingEntity entity)
 	{
-		UpdateDuration(entity);
+		if (!finished)
+		{
+			entity.heal(healingPerUpdate);
+			UpdateDuration(entity);
+		}
 
-		entity.heal(healingPerUpdate);
+		if (remainingDuration <= 0)
+			finished = true;
 	}
 
 	@Override
@@ -82,21 +88,20 @@ public class Heal implements IBuff
 	@Override
 	public void Write(CompoundTag tag)
 	{
-		duration = tag.getInt("heal_duration");
-		remainingDuration = tag.getInt("heal_durationRemaining");
-		ticksPerUpdate = tag.getInt("heal_ticksPerUpdate");
-		totalHealing = tag.getFloat("heal_totalHealing");
-		healingPerUpdate = tag.getFloat("heal_healingPerUpdate");
+		duration = tag.getInt("duration");
+		remainingDuration = tag.getInt("remainingDuration");
+		ticksPerUpdate = tag.getInt("ticksPerUpdate");
+		totalHealing = tag.getFloat("totalHealing");
+		healingPerUpdate = tag.getFloat("healingPerUpdate");
 	}
 
 	@Override
 	public void Read(CompoundTag tag)
 	{
-		tag.putBoolean("heal", true);
-		tag.putInt("heal_duration", duration);
-		tag.putInt("heal_durationRemaining", remainingDuration);
-		tag.putInt("heal_ticksPerUpdate", ticksPerUpdate);
-		tag.putFloat("heal_totalHealing", totalHealing);
-		tag.putFloat("heal_healingPerUpdate", healingPerUpdate);
+		tag.putInt("duration", duration);
+		tag.putInt("remainingDuration", remainingDuration);
+		tag.putInt("ticksPerUpdate", ticksPerUpdate);
+		tag.putFloat("totalHealing", totalHealing);
+		tag.putFloat("healingPerUpdate", healingPerUpdate);
 	}
 }

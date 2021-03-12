@@ -13,6 +13,7 @@ import me.bscal.healthy.common.registry.ItemRegistry;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.minecraft.server.MinecraftServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,6 +24,8 @@ public class Healthy implements ModInitializer
 	public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
 	public static final boolean DEBUG = true;
 	public static final Config CONFIG = new HealthyConfig();
+
+	private static MinecraftServer m_server;
 
 	@Override
 	public void onInitialize()
@@ -41,4 +44,8 @@ public class Healthy implements ModInitializer
 		BasicCommands cmds = new BasicCommands();
 		cmds.Register();
 	}
+
+	public static MinecraftServer GetServer() { return m_server; }
+
+	public static void SetServer(MinecraftServer server) { m_server = server; }
 }
