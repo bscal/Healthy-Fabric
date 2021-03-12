@@ -12,7 +12,7 @@ public class PlayerSleepListener implements PlayerSleepCallback
 {
 
 	private static final float FOOD_WEIGHT = 1.0f;
-	private static final float SAT_WEIGHT = 2.0f;
+	private static final float SAT_WEIGHT = 1.0f;
 
 	@Override
 	public ActionResult onSleep(PlayerEntity player, World world)
@@ -39,7 +39,7 @@ public class PlayerSleepListener implements PlayerSleepCallback
 			float heal = 0;
 			for (; food > 0; food--)
 			{
-				if (player.getMaxHealth() - player.getHealth() <= 0)
+				if (player.getHealth() + heal >= player.getMaxHealth())
 					break;
 				heal += FOOD_WEIGHT;
 			}
