@@ -47,8 +47,8 @@ public class Bandage extends Item
 				serverUser.damage(DamageSource.MAGIC, 10f);
 			}
 
-			HealthProvider.HEALTH.get(serverUser)
-					.AddHealing(Heal.Builder(10, 10 * 20, 20));
+			Heal heal = new Heal("healing", 0).SetHealing(10, 10 * 20, 20);
+			HealthProvider.HEALTH.get(serverUser).AddHealing(heal);
 
 			stack.decrement(1);
 		}

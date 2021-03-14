@@ -37,7 +37,6 @@ public class HealthyGUI extends LightweightGuiDescription
 		WLabel label = new WLabel("HP");
 		root.add(label, 1, 1);
 
-
 		root.validate(this);
 	}
 }

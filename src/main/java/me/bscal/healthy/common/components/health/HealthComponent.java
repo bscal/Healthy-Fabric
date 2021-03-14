@@ -1,8 +1,12 @@
 package me.bscal.healthy.common.components.health;
 
-import me.bscal.healthy.Healthy;
+import me.bscal.healthy.common.components.buff.IBuff;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundTag;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class HealthComponent implements IHealthComponent
 {
@@ -11,6 +15,8 @@ public class HealthComponent implements IHealthComponent
 
 	private Heal m_heal;
 	private boolean m_canReceiveHealing = true;
+
+	private final List<IBuff> m_buffs = new ArrayList<>();
 
 	@Override
 	public void AddHealing(Heal heal)
@@ -32,6 +38,11 @@ public class HealthComponent implements IHealthComponent
 			if (m_heal.finished)
 				m_canReceiveHealing = true;
 		}
+
+		m_buffs.forEach((buff) -> {
+			if (buff.CanUpdate(entity))
+				buff.Update(entity);
+		});
 	}
 
 	@Override
@@ -57,6 +68,44 @@ public class HealthComponent implements IHealthComponent
 	public boolean CanReceiveHealing()
 	{
 		return m_canReceiveHealing;
+	}
+
+	@Override
+	public void AddBuff(IBuff buff)
+	{
+		if (buff != null && !buff.IsFinished())
+		{
+			m_buffs.add(buff);
+		}
+	}
+
+	@Override
+	public List<IBuff> GetBuffs()
+	{
+		return m_buffs;
+	}
+
+	@Override
+	public IBuff[] GetBuff(String name)
+	{
+		return m_buffs.stream().filter((buff) -> buff.GetName().equals(name)).toArray(IBuff[]::new);
+	}
+
+	@Override
+	public Optional<IBuff> GetByKey(String key)
+	{
+		for (IBuff buff : m_buffs)
+		{
+			if (buff.GetKey().equals(key))
+				return Optional.of(buff);
+		}
+		return Optional.empty();
+	}
+
+	@Override
+	public IBuff GetBuffByIndex(int index)
+	{
+		return m_buffs.get(index);
 	}
 
 	@Override

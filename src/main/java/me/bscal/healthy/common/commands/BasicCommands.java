@@ -7,6 +7,8 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import me.bscal.healthy.Healthy;
 import me.bscal.healthy.client.gui.HealthyGUI;
 import me.bscal.healthy.client.gui.HealthyScreen;
+import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.HungerManager;
@@ -25,15 +27,18 @@ public class BasicCommands
 			CommandNode<ServerCommandSource> healthyCommand = dispatcher.register(
 					literal("healthy").executes(this::DefaultCommand));
 
-			LiteralCommandNode<ServerCommandSource> uiCommand = literal("ui").executes(
-					this::UICommand).build();
-			healthyCommand.addChild(uiCommand);
-			LiteralCommandNode<ServerCommandSource> healCommand = literal("heal").executes(
-					this::HealCommand).build();
-			healthyCommand.addChild(healCommand);
-			LiteralCommandNode<ServerCommandSource> pDebugCommand = literal("pdebug").executes(
-					this::PDebugCommand).build();
-			healthyCommand.addChild(pDebugCommand);
+			if (!dedicated)
+			{
+				LiteralCommandNode<ServerCommandSource> healCommand = literal("heal").executes(
+						this::HealCommand).build();
+				healthyCommand.addChild(healCommand);
+				LiteralCommandNode<ServerCommandSource> pDebugCommand = literal("pdebug").executes(
+						this::PDebugCommand).build();
+				healthyCommand.addChild(pDebugCommand);
+				LiteralCommandNode<ServerCommandSource> uiCommand = literal("ui").executes(
+						this::UICommand).build();
+				healthyCommand.addChild(uiCommand);
+			}
 
 		}));
 	}
@@ -46,7 +51,9 @@ public class BasicCommands
 
 	private int UICommand(CommandContext<ServerCommandSource> ctx)
 	{
-		if (!ctx.getSource().getMinecraftServer().isDedicated())
+		if (!ctx.getSource()
+				.getMinecraftServer()
+				.isDedicated() && MinecraftClient.getInstance().currentScreen == null)
 		{
 			MinecraftClient.getInstance().openScreen(new HealthyScreen(new HealthyGUI()));
 		}

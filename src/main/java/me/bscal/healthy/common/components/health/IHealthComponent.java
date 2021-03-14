@@ -4,6 +4,9 @@ import dev.onyxstudios.cca.api.v3.component.ComponentV3;
 import me.bscal.healthy.common.components.buff.IBuff;
 import net.minecraft.entity.LivingEntity;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface IHealthComponent extends ComponentV3
 {
 
@@ -37,5 +40,14 @@ public interface IHealthComponent extends ComponentV3
 	 */
 	boolean CanReceiveHealing();
 
+	void AddBuff(IBuff buff);
+
+	List<IBuff> GetBuffs();
+
+	IBuff[] GetBuff(String name);
+
+	Optional<IBuff> GetByKey(String key);
+
+	IBuff GetBuffByIndex(int index);
 
 }

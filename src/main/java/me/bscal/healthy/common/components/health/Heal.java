@@ -1,13 +1,11 @@
 package me.bscal.healthy.common.components.health;
 
 import me.bscal.healthy.Healthy;
-import me.bscal.healthy.common.components.buff.IBuff;
+import me.bscal.healthy.common.components.buff.AbstractBuff;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundTag;
 
-import java.util.Objects;
-
-public class Heal implements IBuff
+public class Heal extends AbstractBuff
 {
 
 	public static final Heal ZERO = new Heal();
@@ -19,15 +17,23 @@ public class Heal implements IBuff
 	public float totalHealing;
 	public float healingPerUpdate;
 
-	public static Heal Builder(float totalHealing, int durInTicks, int ticksPerHeal)
+	public Heal()
 	{
-		Heal heal = new Heal();
-		heal.duration = durInTicks;
-		heal.remainingDuration = durInTicks;
-		heal.ticksPerUpdate = ticksPerHeal;
-		heal.totalHealing = totalHealing;
-		heal.healingPerUpdate = totalHealing / (float)(durInTicks / ticksPerHeal);
-		return heal;
+	}
+
+	public Heal(String name, int id)
+	{
+		super(name, id);
+	}
+
+	public Heal SetHealing(float totalHealing, int durInTicks, int ticksPerHeal)
+	{
+		this.duration = durInTicks;
+		this.remainingDuration = durInTicks;
+		this.ticksPerUpdate = ticksPerHeal;
+		this.totalHealing = totalHealing;
+		this.healingPerUpdate = totalHealing / (float) (durInTicks / ticksPerHeal);
+		return this;
 	}
 
 	@Override
@@ -88,6 +94,7 @@ public class Heal implements IBuff
 	@Override
 	public void Write(CompoundTag tag)
 	{
+		super.Write(tag);
 		duration = tag.getInt("duration");
 		remainingDuration = tag.getInt("remainingDuration");
 		ticksPerUpdate = tag.getInt("ticksPerUpdate");
@@ -98,6 +105,7 @@ public class Heal implements IBuff
 	@Override
 	public void Read(CompoundTag tag)
 	{
+		super.Read(tag);
 		tag.putInt("duration", duration);
 		tag.putInt("remainingDuration", remainingDuration);
 		tag.putInt("ticksPerUpdate", ticksPerUpdate);

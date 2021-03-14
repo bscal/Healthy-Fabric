@@ -6,6 +6,12 @@ import net.minecraft.nbt.CompoundTag;
 public interface IBuff
 {
 
+	String GetName();
+
+	int GetID();
+
+	String GetKey();
+
 	int GetDuration();
 
 	int GetRemainingDuration();
