@@ -4,6 +4,7 @@ import me.bscal.healthy.Healthy;
 import me.bscal.healthy.common.components.health.HealthProvider;
 import me.bscal.healthy.common.components.health.HealthUtils;
 import me.bscal.healthy.common.components.health.IHealthComponent;
+import me.bscal.healthy.common.components.injuries.InjuryProvider;
 import me.bscal.healthy.common.events.callbacks.PlayerTickCallback;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -31,6 +32,8 @@ public class PlayerTickListener implements PlayerTickCallback
 
 			if (Healthy.GetServer().getTicks() % 20 == 0)
 			{
+				InjuryProvider.INJURY.get(player).UpdateInjuries();
+
 				BlockPos playerPos = player.getBlockPos();
 				Iterable<BlockPos> blocksAround = BlockPos.iterateOutwards(playerPos, 3,3 ,3);
 				Iterator<BlockPos> blocksIterator = blocksAround.iterator();

@@ -1,4 +1,7 @@
 {
   "item.healthy.bandage": "Bandage",
-  "msg.healthy.well.rested": "You feel well rested!"
+  "msg.healthy.well.rested": "You feel well rested!",
+  "msg.healthy.bleed.start": "You start to bleed.",
+  "msg.healthy.bleed.end": "You stop bleeding.",
+  "msg.healthy.bleed.tick": "You are bleeding."
 }

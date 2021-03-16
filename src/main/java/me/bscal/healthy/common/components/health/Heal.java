@@ -8,7 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 public class Heal extends AbstractBuff
 {
 
-	public static final Heal ZERO = new Heal();
+	public static final Heal ZERO = CreateHeal("ZERO");
 
 	public int duration;
 	public int remainingDuration;
@@ -17,13 +17,14 @@ public class Heal extends AbstractBuff
 	public float totalHealing;
 	public float healingPerUpdate;
 
-	public Heal()
-	{
-	}
-
 	public Heal(String name, int id)
 	{
 		super(name, id);
+	}
+
+	public static Heal CreateHeal(String name)
+	{
+		return new Heal(name, 0);
 	}
 
 	public Heal SetHealing(float totalHealing, int durInTicks, int ticksPerHeal)
@@ -69,7 +70,7 @@ public class Heal extends AbstractBuff
 	@Override
 	public boolean CanUpdate(LivingEntity entity)
 	{
-		return Healthy.GetServer().getTicks() % Math.max(1, ticksPerUpdate) == 0;
+		return !finished && Healthy.GetServer().getTicks() % Math.max(1, ticksPerUpdate) == 0;
 	}
 
 	@Override

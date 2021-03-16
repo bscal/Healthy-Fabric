@@ -1,30 +1,40 @@
 package me.bscal.healthy.common.components.health;
 
+import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
+import me.bscal.healthy.Healthy;
 import me.bscal.healthy.common.components.buff.IBuff;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class HealthComponent implements IHealthComponent
+public class HealthComponent implements IHealthComponent, AutoSyncedComponent
 {
 
 	public static final String HP_REGEN_KEY = "regen_tag";
 
-	private Heal m_heal;
+	private final PlayerEntity provider;
+	private Heal m_heal = Heal.ZERO;
 	private boolean m_canReceiveHealing = true;
 
 	private final List<IBuff> m_buffs = new ArrayList<>();
 
+	public HealthComponent(PlayerEntity provider)
+	{
+		this.provider = provider;
+	}
+
 	@Override
 	public void AddHealing(Heal heal)
 	{
-		if (m_canReceiveHealing)
+		if (!provider.getEntityWorld().isClient && m_canReceiveHealing)
 		{
 			m_heal = heal;
 			m_canReceiveHealing = false;
+			HealthProvider.HEALTH.sync(provider);
 		}
 	}
 
@@ -37,12 +47,9 @@ public class HealthComponent implements IHealthComponent
 
 			if (m_heal.finished)
 				m_canReceiveHealing = true;
-		}
 
-		m_buffs.forEach((buff) -> {
-			if (buff.CanUpdate(entity))
-				buff.Update(entity);
-		});
+			HealthProvider.HEALTH.sync(provider);
+		}
 	}
 
 	@Override
@@ -111,23 +118,20 @@ public class HealthComponent implements IHealthComponent
 	@Override
 	public void readFromNbt(CompoundTag tag)
 	{
-		if (tag.contains(HP_REGEN_KEY))
-		{
-			Heal heal = new Heal();
-			heal.Read((CompoundTag) tag.get(HP_REGEN_KEY));
-			AddHealing(heal);
-		}
-
+		m_heal.Read((CompoundTag) tag.get(HP_REGEN_KEY));
+		Healthy.LOGGER.info("read = " + m_heal.name);
 	}
 
 	@Override
 	public void writeToNbt(CompoundTag tag)
 	{
-		if (m_heal != null && !m_heal.finished)
-		{
-			CompoundTag healTag = new CompoundTag();
-			m_heal.Write(healTag);
-			tag.put(HP_REGEN_KEY, healTag);
-		}
+		CompoundTag healTag = new CompoundTag();
+		m_heal.Write(healTag);
+		tag.put(HP_REGEN_KEY, healTag);
+
+		Healthy.LOGGER.info(m_heal.name + ", " + this.getClass().getSimpleName());
 	}
+
+
+
 }

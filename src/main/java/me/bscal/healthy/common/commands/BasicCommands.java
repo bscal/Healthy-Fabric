@@ -7,11 +7,12 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import me.bscal.healthy.Healthy;
 import me.bscal.healthy.client.gui.HealthyGUI;
 import me.bscal.healthy.client.gui.HealthyScreen;
-import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager;
-import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource;
+import me.bscal.healthy.common.components.injuries.InjuryProvider;
+import me.bscal.healthy.common.components.injuries.InjuryRegistry;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.HungerManager;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
@@ -38,13 +39,27 @@ public class BasicCommands
 				LiteralCommandNode<ServerCommandSource> uiCommand = literal("ui").executes(
 						this::UICommand).build();
 				healthyCommand.addChild(uiCommand);
+				LiteralCommandNode<ServerCommandSource> bleedCommand = literal("bleed").executes(
+						this::BleedCommand).build();
+				healthyCommand.addChild(bleedCommand);
 			}
 
 		}));
 	}
 
-	private int DefaultCommand(
-			CommandContext<ServerCommandSource> serverCommandSourceCommandContext)
+	private int BleedCommand(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException
+	{
+		if (!ctx.getSource().getMinecraftServer().isDedicated() && !ctx.getSource()
+				.getWorld().isClient)
+		{
+			InjuryRegistry.BLEED_TYPE.CreateNewAndApply(ctx.getSource().getPlayer());
+			Healthy.LOGGER.info("COMMAND");
+		}
+
+		return 1;
+	}
+
+	private int DefaultCommand(CommandContext<ServerCommandSource> ctx)
 	{
 		return 1;
 	}

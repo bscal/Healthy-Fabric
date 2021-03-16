@@ -19,7 +19,8 @@
       "me.bscal.healthy.Healthy"
     ],
     "cardinal-components-entity": [
-      "me.bscal.healthy.common.components.health.HealthProvider"
+      "me.bscal.healthy.common.components.health.HealthProvider",
+      "me.bscal.healthy.common.components.injuries.InjuryProvider"
     ]
   },
   "mixins": [
@@ -32,7 +33,8 @@
   },
   "custom": {
     "cardinal-components": [
-      "healthy:health"
+      "healthy:health",
+      "healthy:injury"
     ]
   }
 }

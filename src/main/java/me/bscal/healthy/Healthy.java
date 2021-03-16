@@ -33,13 +33,12 @@ public class Healthy implements ModInitializer
 		CONFIG.readConfigFromFile();
 
 		ItemRegistry.Register();
+		InjuryRegistry.Register();
 
 		ServerLifecycleEvents.SERVER_STARTED.register(new ServerStartedListener());
 		PlayerTickCallback.EVENT.register(new PlayerTickListener());
 		PlayerSleepCallback.EVENT.register(new PlayerSleepListener());
 		ServerLifecycleEvents.SERVER_STOPPED.register((instance) -> CONFIG.saveConfigToFile());
-
-		InjuryRegistry.Register();
 
 		BasicCommands cmds = new BasicCommands();
 		cmds.Register();

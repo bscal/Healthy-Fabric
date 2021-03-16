@@ -1,4 +1,4 @@
-package me.bscal.healthy.common.components.health;
+package me.bscal.healthy.common.components.injuries;
 
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistryV3;
@@ -8,16 +8,18 @@ import me.bscal.healthy.Healthy;
 import nerdhub.cardinal.components.api.util.RespawnCopyStrategy;
 import net.minecraft.util.Identifier;
 
-public final class HealthProvider implements EntityComponentInitializer
+public class InjuryProvider implements EntityComponentInitializer
 {
 
-	public static final ComponentKey<IHealthComponent> HEALTH = ComponentRegistryV3.INSTANCE.getOrCreate(
-			new Identifier(Healthy.MOD_ID, "health"), IHealthComponent.class);
+	public static final ComponentKey<IInjuryComponent> INJURY = ComponentRegistryV3.INSTANCE.getOrCreate(
+			new Identifier(Healthy.MOD_ID, "injury"), IInjuryComponent.class);
 
 	@Override
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry)
 	{
-		registry.registerForPlayers(HEALTH, HealthComponent::new,
+		registry.registerForPlayers(INJURY, player -> new InjuryComponent(),
 				RespawnCopyStrategy.ALWAYS_COPY);
 	}
+
+
 }
