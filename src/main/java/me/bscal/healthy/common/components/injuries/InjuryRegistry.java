@@ -1,7 +1,8 @@
 package me.bscal.healthy.common.components.injuries;
 
 import me.bscal.healthy.Healthy;
-import me.bscal.healthy.common.components.injuries.injurytypes.BleedInjury;
+import me.bscal.healthy.common.components.injuries.injurytypes.Bleed;
+import me.bscal.healthy.common.components.injuries.injurytypes.HeavyBleed;
 import me.bscal.healthy.common.damage.damagesources.BleedSource;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -17,8 +18,8 @@ public final class InjuryRegistry
 
 	public static final Map<Identifier, IInjury> INJURY_TYPES = new HashMap<>();
 
-	public static final IInjury BLEED_TYPE = new BleedInjury(new Identifier(Healthy.MOD_ID, "bleed"));
-	//static final IInjury HEAVY_BLEED_TYPE = new InjuryType(new Identifier(Healthy.MOD_ID, "heavy_bleed"));
+	public static final IInjury BLEED_TYPE = new Bleed(new Identifier(Healthy.MOD_ID, "bleed"));
+	public static final IInjury HEAVY_BLEED_TYPE = new HeavyBleed(new Identifier(Healthy.MOD_ID, "heavy_bleed"));
 	//static final IInjury DEEP_BLEED_TYPE = new InjuryType(new Identifier(Healthy.MOD_ID, "deep_bleed"));
 	//static final IInjury POISON_TYPE = new InjuryType(new Identifier(Healthy.MOD_ID, "poison"));
 	//static final IInjury DISEASE_TYPE = new InjuryType(new Identifier(Healthy.MOD_ID, "disease"));
@@ -30,7 +31,7 @@ public final class InjuryRegistry
 	public static void Register()
 	{
 		RegisterType(BLEED_TYPE);
-		//RegisterType(HEAVY_BLEED_TYPE);
+		RegisterType(HEAVY_BLEED_TYPE);
 		//RegisterType(DEEP_BLEED_TYPE);
 		//RegisterType(POISON_TYPE);
 		//RegisterType(DISEASE_TYPE);

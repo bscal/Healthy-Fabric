@@ -1,6 +1,5 @@
 package me.bscal.healthy.common.components.injuries;
 
-import me.bscal.healthy.Healthy;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
@@ -16,9 +15,28 @@ public abstract class InjuryType implements IInjury
 	{
 	}
 
+	public InjuryType(Identifier id)
+	{
+		this.id = id;
+	}
+
+
 	public InjuryType(PlayerEntity player)
 	{
 		this.player = player;
+	}
+
+	public void SetPlayer(PlayerEntity player)
+	{
+		this.player = player;
+	}
+
+	@Override
+	public IInjury MakeNew(PlayerEntity player)
+	{
+		InjuryType injury = (InjuryType)MakeDefault();
+		injury.player = player;
+		return injury;
 	}
 
 	@Override
@@ -49,7 +67,6 @@ public abstract class InjuryType implements IInjury
 	public void Write(CompoundTag tag)
 	{
 		tag.putString("id", id.toString());
-		tag.putUuid("uuid", player.getUuid());
 		tag.putInt("dur", duration);
 	}
 
@@ -57,7 +74,6 @@ public abstract class InjuryType implements IInjury
 	public void Read(CompoundTag tag)
 	{
 		id = new Identifier(tag.getString("id"));
-		player = Healthy.GetServer().getPlayerManager().getPlayer(tag.getUuid("uuid"));
 		duration = tag.getInt("dur");
 	}
 

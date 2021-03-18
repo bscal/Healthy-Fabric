@@ -42,15 +42,15 @@ public abstract class AbstractBuff implements IBuff
 	@Override
 	public void Write(CompoundTag tag)
 	{
-		name = tag.getString("name");
-		id = tag.getInt("id");
+		tag.putString("name", name);
+		tag.putInt("id", id);
 	}
 
 	@Override
 	public void Read(CompoundTag tag)
 	{
-		tag.putString("name", name);
-		tag.putInt("id", id);
+		name = tag.getString("name");
+		id = tag.getInt("id");
 	}
 
 }

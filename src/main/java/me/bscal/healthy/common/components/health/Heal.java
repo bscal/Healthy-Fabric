@@ -96,21 +96,21 @@ public class Heal extends AbstractBuff
 	public void Write(CompoundTag tag)
 	{
 		super.Write(tag);
-		duration = tag.getInt("duration");
-		remainingDuration = tag.getInt("remainingDuration");
-		ticksPerUpdate = tag.getInt("ticksPerUpdate");
-		totalHealing = tag.getFloat("totalHealing");
-		healingPerUpdate = tag.getFloat("healingPerUpdate");
+		tag.putInt("duration", duration);
+		tag.putInt("remainingDuration", remainingDuration);
+		tag.putInt("ticksPerUpdate", ticksPerUpdate);
+		tag.putFloat("totalHealing", totalHealing);
+		tag.putFloat("healingPerUpdate", healingPerUpdate);
 	}
 
 	@Override
 	public void Read(CompoundTag tag)
 	{
 		super.Read(tag);
-		tag.putInt("duration", duration);
-		tag.putInt("remainingDuration", remainingDuration);
-		tag.putInt("ticksPerUpdate", ticksPerUpdate);
-		tag.putFloat("totalHealing", totalHealing);
-		tag.putFloat("healingPerUpdate", healingPerUpdate);
+		duration = tag.getInt("duration");
+		remainingDuration = tag.getInt("remainingDuration");
+		ticksPerUpdate = tag.getInt("ticksPerUpdate");
+		totalHealing = tag.getFloat("totalHealing");
+		healingPerUpdate = tag.getFloat("healingPerUpdate");
 	}
 }

@@ -9,6 +9,7 @@ import me.bscal.healthy.client.gui.HealthyGUI;
 import me.bscal.healthy.client.gui.HealthyScreen;
 import me.bscal.healthy.common.components.injuries.InjuryProvider;
 import me.bscal.healthy.common.components.injuries.InjuryRegistry;
+import me.bscal.healthy.common.components.injuries.injurytypes.Bleed;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.HungerManager;
@@ -52,7 +53,10 @@ public class BasicCommands
 		if (!ctx.getSource().getMinecraftServer().isDedicated() && !ctx.getSource()
 				.getWorld().isClient)
 		{
-			InjuryRegistry.BLEED_TYPE.CreateNewAndApply(ctx.getSource().getPlayer());
+			PlayerEntity player = ctx.getSource().getPlayer();
+			Bleed bleed = (Bleed)InjuryRegistry.BLEED_TYPE.MakeNew(player);
+			bleed.SetAttacker(player);
+			InjuryProvider.INJURY.get(player).AddInjury(bleed, true);
 			Healthy.LOGGER.info("COMMAND");
 		}
 

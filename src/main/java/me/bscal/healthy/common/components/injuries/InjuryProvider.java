@@ -17,7 +17,7 @@ public class InjuryProvider implements EntityComponentInitializer
 	@Override
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry)
 	{
-		registry.registerForPlayers(INJURY, player -> new InjuryComponent(),
+		registry.registerForPlayers(INJURY, InjuryComponent::new,
 				RespawnCopyStrategy.ALWAYS_COPY);
 	}
 

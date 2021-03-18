@@ -1,6 +1,7 @@
 package me.bscal.healthy.common.components.injuries;
 
 import me.bscal.healthy.Healthy;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.util.Identifier;
@@ -12,7 +13,13 @@ import java.util.Map;
 public class InjuryComponent implements IInjuryComponent
 {
 
+	private final PlayerEntity m_provider;
 	private final Map<Identifier, IInjury> m_injuries = new HashMap<>();
+
+	public InjuryComponent(PlayerEntity provider)
+	{
+		m_provider = provider;
+	}
 
 	@Override
 	public void readFromNbt(CompoundTag tag)
@@ -24,7 +31,7 @@ public class InjuryComponent implements IInjuryComponent
 			list.forEach((iTag) -> {
 				CompoundTag cTag =(CompoundTag)iTag;
 				InjuryRegistry.GetType(new Identifier(cTag.getString("id"))).ifPresent((regInjury) -> {
-					IInjury injury = regInjury.CreateNew();
+					IInjury injury = regInjury.MakeNew(m_provider);
 					injury.Read(cTag);
 					m_injuries.put(injury.GetIdentifier(), injury);
 					Healthy.LOGGER.info("reading");

@@ -11,12 +11,12 @@ public interface IInjury
 	/**
 	 * Creates a new instance of injury.
 	 */
-	IInjury CreateNew();
+	IInjury MakeDefault();
 
 	/**
 	 * Creates a new instance of injury.
 	 */
-	void CreateNewAndApply(PlayerEntity player);
+	IInjury MakeNew(PlayerEntity player);
 
 	/**
 	 * When injury is applied the first time to a player.
