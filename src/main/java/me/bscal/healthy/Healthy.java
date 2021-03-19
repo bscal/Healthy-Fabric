@@ -17,6 +17,8 @@ import net.minecraft.server.MinecraftServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Random;
+
 public class Healthy implements ModInitializer
 {
 	public static final String MOD_ID = "healthy";
@@ -24,6 +26,7 @@ public class Healthy implements ModInitializer
 	public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
 	public static final boolean DEBUG = true;
 	public static final Config CONFIG = new HealthyConfig();
+	public static final Random RAND = new Random();
 
 	private static MinecraftServer m_server;
 

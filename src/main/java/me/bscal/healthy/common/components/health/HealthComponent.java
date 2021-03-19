@@ -119,7 +119,6 @@ public class HealthComponent implements IHealthComponent, AutoSyncedComponent
 	public void readFromNbt(CompoundTag tag)
 	{
 		m_heal.Read((CompoundTag) tag.get(HP_REGEN_KEY));
-		Healthy.LOGGER.info("read = " + m_heal.name);
 	}
 
 	@Override
@@ -128,8 +127,6 @@ public class HealthComponent implements IHealthComponent, AutoSyncedComponent
 		CompoundTag healTag = new CompoundTag();
 		m_heal.Write(healTag);
 		tag.put(HP_REGEN_KEY, healTag);
-
-		Healthy.LOGGER.info(m_heal.name + ", " + this.getClass().getSimpleName());
 	}
 
 

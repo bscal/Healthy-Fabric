@@ -3,13 +3,16 @@ package me.bscal.healthy.client.gui;
 import io.github.cottonmc.cotton.gui.client.BackgroundPainter;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.client.NinePatch;
-import io.github.cottonmc.cotton.gui.widget.WBar;
-import io.github.cottonmc.cotton.gui.widget.WBox;
-import io.github.cottonmc.cotton.gui.widget.WGridPanel;
-import io.github.cottonmc.cotton.gui.widget.WLabel;
+import io.github.cottonmc.cotton.gui.widget.*;
 import io.github.cottonmc.cotton.gui.widget.data.Axis;
 import io.github.cottonmc.cotton.gui.widget.data.Texture;
 import me.bscal.healthy.Healthy;
+import me.bscal.healthy.common.components.health.HealthProvider;
+import me.bscal.healthy.common.components.injuries.IInjury;
+import me.bscal.healthy.common.components.injuries.IInjuryComponent;
+import me.bscal.healthy.common.components.injuries.InjuryComponent;
+import me.bscal.healthy.common.components.injuries.InjuryProvider;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.Identifier;
 
 public class HealthyGUI extends LightweightGuiDescription
@@ -36,6 +39,17 @@ public class HealthyGUI extends LightweightGuiDescription
 
 		WLabel label = new WLabel("HP");
 		root.add(label, 1, 1);
+
+		WGridPanel grid = new WGridPanel();
+		IInjuryComponent injuries = InjuryProvider.INJURY.get(MinecraftClient.getInstance().player);
+		int x = 0;
+		int y = 1;
+		for (IInjury injury : injuries.GetInjuries().values())
+		{
+			WLabel sprite = new WLabel(injury.GetIdentifier().getPath());
+			grid.add(sprite, x++, y);
+		}
+		root.add(grid, 12, 12);
 
 		root.validate(this);
 	}

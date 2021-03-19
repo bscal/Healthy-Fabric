@@ -3,5 +3,8 @@
   "msg.healthy.well.rested": "You feel well rested!",
   "msg.healthy.bleed.start": "You start to bleed.",
   "msg.healthy.bleed.end": "You stop bleeding.",
-  "msg.healthy.bleed.tick": "You are bleeding."
+  "msg.healthy.bleed.tick": "You are bleeding.",
+  "msg.healthy.heavybleed.tick": "You are bleeding heavily.",
+  "msg.healthy.heavybleed.bandage" : "Your heavy wounds are tended to temporarily.",
+  "msg.healthy.infection.tick": "You have an infection."
 }

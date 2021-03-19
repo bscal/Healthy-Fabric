@@ -35,7 +35,8 @@ public abstract class EntityBleedInjury extends InjuryType
 	{
 		super.Write(tag);
 		tag.putInt("count", m_counter);
-		tag.putInt("attacker", m_attacker.getEntityId());
+		if (m_attacker != null)
+			tag.putInt("attacker", m_attacker.getEntityId());
 	}
 
 	@Override
@@ -43,9 +44,9 @@ public abstract class EntityBleedInjury extends InjuryType
 	{
 		super.Read(tag);
 		m_counter = tag.getInt("count");
-		Entity ent =  (player != null) ?  player.getEntityWorld().getEntityById(tag.getInt("attacker")) : null;
+		Entity ent = (player != null) ? player.getEntityWorld().getEntityById(tag.getInt("attacker")) : null;
 		if (ent instanceof LivingEntity)
-			m_attacker = (LivingEntity)ent;
+			m_attacker = (LivingEntity) ent;
 	}
 
 }

@@ -1,5 +1,8 @@
 package me.bscal.healthy.common.components.injuries;
 
+import me.bscal.healthy.Healthy;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
@@ -11,15 +14,10 @@ public abstract class InjuryType implements IInjury
 	protected PlayerEntity player;
 	protected int duration;
 
-	public InjuryType()
-	{
-	}
-
 	public InjuryType(Identifier id)
 	{
 		this.id = id;
 	}
-
 
 	public InjuryType(PlayerEntity player)
 	{

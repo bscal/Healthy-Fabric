@@ -16,28 +16,6 @@ import net.minecraft.client.MinecraftClient;
 	@Override
 	public void onInitializeClient()
 	{
-		//RegisterClient();
 	}
 
-	public void RegisterClient()
-	{
-		ClientCommandManager.DISPATCHER.register(ClientCommandManager.literal("healthy").executes(this::DefaultCommand));
-		ClientCommandManager.DISPATCHER.register(ClientCommandManager.literal("ui").executes(this::UICommand));
-	}
-
-	private int DefaultCommand(CommandContext<FabricClientCommandSource> ctx)
-	{
-		Healthy.LOGGER.info("Client");
-		return 1;
-	}
-
-	private int UICommand(CommandContext<FabricClientCommandSource> ctx)
-	{
-		if (ctx.getSource().getWorld().isClient)
-		{
-			MinecraftClient.getInstance().openScreen(new HealthyScreen(new HealthyGUI()));
-		}
-
-		return 1;
-	}
 }

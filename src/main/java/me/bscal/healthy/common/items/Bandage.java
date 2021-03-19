@@ -4,6 +4,11 @@ import me.bscal.healthy.Healthy;
 import me.bscal.healthy.common.components.health.Heal;
 import me.bscal.healthy.common.components.health.HealthComponent;
 import me.bscal.healthy.common.components.health.HealthProvider;
+import me.bscal.healthy.common.components.injuries.IInjuryComponent;
+import me.bscal.healthy.common.components.injuries.InjuryComponent;
+import me.bscal.healthy.common.components.injuries.InjuryProvider;
+import me.bscal.healthy.common.components.injuries.InjuryRegistry;
+import me.bscal.healthy.common.components.injuries.injurytypes.HeavyBleed;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
@@ -44,11 +49,23 @@ public class Bandage extends Item
 
 			if (Healthy.DEBUG)
 			{
-				serverUser.damage(DamageSource.MAGIC, 10f);
+				//serverUser.damage(DamageSource.MAGIC, 10f);
 			}
 
 			Heal heal = new Heal("healing", 0).SetHealing(10, 10 * 20, 20);
 			HealthProvider.HEALTH.get(serverUser).AddHealing(heal);
+
+			IInjuryComponent injuries = InjuryProvider.INJURY.get(serverUser);
+
+			if (injuries.HasInjury(InjuryRegistry.BLEED_TYPE))
+			{
+				injuries.RemoveInjury(InjuryRegistry.BLEED_TYPE, true);
+			}
+			else if (injuries.HasInjury(InjuryRegistry.HEAVY_BLEED_TYPE))
+			{
+				HeavyBleed heavyBleed = (HeavyBleed)injuries.GetInjury(InjuryRegistry.HEAVY_BLEED_TYPE);
+				heavyBleed.SetBandageCount(60 * 20);
+			}
 
 			stack.decrement(1);
 		}

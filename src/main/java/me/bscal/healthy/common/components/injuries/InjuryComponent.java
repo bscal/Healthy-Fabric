@@ -1,5 +1,6 @@
 package me.bscal.healthy.common.components.injuries;
 
+import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import me.bscal.healthy.Healthy;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
@@ -10,7 +11,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class InjuryComponent implements IInjuryComponent
+public class InjuryComponent implements IInjuryComponent, AutoSyncedComponent
 {
 
 	private final PlayerEntity m_provider;
@@ -80,6 +81,7 @@ public class InjuryComponent implements IInjuryComponent
 				}
 			}
 		}
+		InjuryProvider.INJURY.sync(m_provider);
 	}
 
 	@Override
@@ -91,20 +93,27 @@ public class InjuryComponent implements IInjuryComponent
 	@Override
 	public void AddInjury(IInjury injury, boolean trigger)
 	{
+
 		IInjury lastMapping = m_injuries.put(injury.GetIdentifier(), injury);
 		if (trigger && lastMapping == null)
 			injury.OnStartInjury();
+
+		InjuryProvider.INJURY.sync(m_provider);
 	}
 
 	@Override
 	public void RemoveInjury(IInjury injury, boolean trigger)
 	{
-		IInjury lastMapping = m_injuries.remove(injury.GetIdentifier());
-		if (trigger && lastMapping != null)
+		if (m_injuries.containsKey(injury.GetIdentifier()))
 		{
-			injury.OnRemoveInjury();
-			lastMapping = null;
+			if (trigger)
+				injury.OnRemoveInjury();
+
+			IInjury lastMapping = m_injuries.remove(injury.GetIdentifier());
+			InjuryProvider.INJURY.sync(m_provider);
 		}
+
+
 	}
 
 	@Override
