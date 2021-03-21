@@ -1,4 +1,5 @@
 {
+  "text.healthy.gui.hp": "HP: %.00f/%.00f",
   "item.healthy.bandage": "Bandage",
   "msg.healthy.well.rested": "You feel well rested!",
   "msg.healthy.bleed.start": "You start to bleed.",
@@ -6,5 +7,6 @@
   "msg.healthy.bleed.tick": "You are bleeding.",
   "msg.healthy.heavybleed.tick": "You are bleeding heavily.",
   "msg.healthy.heavybleed.bandage" : "Your heavy wounds are tended to temporarily.",
+  "msg.healthy.infection.start": "You wounds seems to be infected",
   "msg.healthy.infection.tick": "You have an infection."
 }

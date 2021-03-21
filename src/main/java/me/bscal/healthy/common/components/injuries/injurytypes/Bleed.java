@@ -15,7 +15,7 @@ public class Bleed extends EntityBleedInjury
 	public Bleed(Identifier id)
 	{
 		super(id);
-		this.duration = 60 * 20;
+		this.duration = 100 * 20;
 	}
 
 	@Override

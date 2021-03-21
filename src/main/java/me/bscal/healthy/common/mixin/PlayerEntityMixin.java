@@ -27,7 +27,8 @@ abstract class PlayerEntityMixin
 		PlayerEntity player = (PlayerEntity) (Object) this;
 
 		boolean flag = player.getHealth() > 0.0F && player.getHealth() < player.getMaxHealth() && player
-				.getHealth() <= 20 - player.getMaxHealth() * .75f;
+				.getHealth() <= player.getMaxHealth() - player.getMaxHealth() * .75f;
+
 
 		cir.setReturnValue(flag);
 	}

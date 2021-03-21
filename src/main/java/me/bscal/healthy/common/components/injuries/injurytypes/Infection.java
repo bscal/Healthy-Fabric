@@ -21,7 +21,7 @@ public class Infection extends InjuryType
 	public Infection(Identifier id)
 	{
 		super(id);
-		this.duration = 30 * 20;
+		this.duration = 100 * 20;
 	}
 
 	@Override
@@ -33,6 +33,7 @@ public class Infection extends InjuryType
 	@Override
 	public void OnStartInjury()
 	{
+		player.sendMessage(new TranslatableText("msg.healthy.infection.start").formatted(Formatting.GREEN), false);
 	}
 
 	@Override

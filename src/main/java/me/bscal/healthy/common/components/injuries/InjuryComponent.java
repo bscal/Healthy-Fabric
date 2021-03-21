@@ -104,16 +104,14 @@ public class InjuryComponent implements IInjuryComponent, AutoSyncedComponent
 	@Override
 	public void RemoveInjury(IInjury injury, boolean trigger)
 	{
-		if (m_injuries.containsKey(injury.GetIdentifier()))
-		{
-			if (trigger)
-				injury.OnRemoveInjury();
+		IInjury injuryInstance = m_injuries.get(injury.GetIdentifier());
 
-			IInjury lastMapping = m_injuries.remove(injury.GetIdentifier());
+		if (injuryInstance != null)
+		{
+			injuryInstance.OnRemoveInjury();
+			m_injuries.remove(injury.GetIdentifier());
 			InjuryProvider.INJURY.sync(m_provider);
 		}
-
-
 	}
 
 	@Override

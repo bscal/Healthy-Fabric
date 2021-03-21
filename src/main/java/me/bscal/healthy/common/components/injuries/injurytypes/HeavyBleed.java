@@ -18,7 +18,7 @@ public class HeavyBleed extends EntityBleedInjury
 	public HeavyBleed(Identifier id)
 	{
 		super(id);
-		this.duration = 30 * 20;
+		this.duration = 100 * 20;
 	}
 
 	public void SetBandageCount(int counter)
