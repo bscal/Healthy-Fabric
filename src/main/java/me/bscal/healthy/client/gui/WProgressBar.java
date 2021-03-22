@@ -9,6 +9,9 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 
+/**
+ * Was a alternative to WBar to easily show float values
+ */
 public class WProgressBar extends WWidget
 {
 	protected final Texture bg;
