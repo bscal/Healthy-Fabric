@@ -4,6 +4,7 @@ import me.bscal.healthy.Healthy;
 import me.bscal.healthy.common.components.injuries.IInjury;
 import me.bscal.healthy.common.components.injuries.InjuryRegistry;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -12,13 +13,14 @@ public class HeavyBleed extends EntityBleedInjury
 {
 
 	private static final float DAMAGE = 1.0f;
+	private static final String TEXT_STR = "tooltip.healthy.heavy_bleed";
 
 	protected int m_bandageCounter = 0;
 
 	public HeavyBleed(Identifier id)
 	{
 		super(id);
-		this.duration = 100 * 20;
+		this.duration = 10 * 20;
 	}
 
 	public void SetBandageCount(int counter)
@@ -63,6 +65,20 @@ public class HeavyBleed extends EntityBleedInjury
 
 			player.damage(InjuryRegistry.bleed(m_attacker), DAMAGE);
 		}
+	}
+
+	@Override
+	public Text[] GetDescription()
+	{
+		return new Text[] {
+				new TranslatableText(TEXT_STR + "_0").formatted(Formatting.BLUE, Formatting.BOLD),
+				new TranslatableText(TEXT_STR + "_1a").formatted(Formatting.GRAY).append(new TranslatableText(TEXT_STR + "_1b").formatted(Formatting.RED)),
+				new TranslatableText(TEXT_STR + "_2", duration / 20).formatted(Formatting.GRAY),
+				new TranslatableText(TEXT_STR + "_3"),
+				new TranslatableText(TEXT_STR + "_4", 1, 2).formatted(Formatting.GRAY),
+				new TranslatableText(TEXT_STR + "_5", InjuryRegistry.HEAVY_BLEED_TYPE.GetDuration() / 20).formatted(Formatting.GRAY),
+				new TranslatableText(TEXT_STR + "_6").formatted(Formatting.GRAY)
+		};
 	}
 
 	@Override

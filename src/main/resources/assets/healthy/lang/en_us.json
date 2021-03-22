@@ -8,5 +8,33 @@
   "msg.healthy.heavybleed.tick": "You are bleeding heavily.",
   "msg.healthy.heavybleed.bandage" : "Your heavy wounds are tended to temporarily.",
   "msg.healthy.infection.start": "You wounds seems to be infected",
-  "msg.healthy.infection.tick": "You have an infection."
+  "msg.healthy.infection.tick": "You have an infection.",
+
+  "tooltip.healthy.bleed_0": "Bleed",
+  "tooltip.healthy.bleed_1a": "Type: ",
+  "tooltip.healthy.bleed_1b": "Harmful",
+  "tooltip.healthy.bleed_2": "%ds remaining",
+  "tooltip.healthy.bleed_3": " ",
+  "tooltip.healthy.bleed_4": "Bleeding causes you to take light",
+  "tooltip.healthy.bleed_5": "Non lethal. Lasts %d seconds.",
+  "tooltip.healthy.bleed_6": "Bandages can remove bleeding.",
+
+  "tooltip.healthy.heavy_bleed_0": "Heavy Bleed",
+  "tooltip.healthy.heavy_bleed_1a": "Type: ",
+  "tooltip.healthy.heavy_bleed_1b": "Harmful",
+  "tooltip.healthy.heavy_bleed_2": "%ds remaining",
+  "tooltip.healthy.heavy_bleed_3": " ",
+  "tooltip.healthy.heavy_bleed_4": "Causes you to take %ddmg/%ds of",
+  "tooltip.healthy.heavy_bleed_5": "lethal damage. Lasts %d seconds.",
+  "tooltip.healthy.heavy_bleed_6": "Bandages can remove bleeding.",
+
+  "tooltip.healthy.infection_0": "Infection",
+  "tooltip.healthy.infection_1a": "Type: ",
+  "tooltip.healthy.infection_1b": "Harmful",
+  "tooltip.healthy.infection_2": "%ds remaining",
+  "tooltip.healthy.infection_3": " ",
+  "tooltip.healthy.infection_4": "An infection is caused from a bleed not",
+  "tooltip.healthy.infection_5": "being healed. Lasts %d seconds. To remove",
+  "tooltip.healthy.infection_6": "use TODO_TOOLTIP_INFECTION_REMOVAL."
+
 }

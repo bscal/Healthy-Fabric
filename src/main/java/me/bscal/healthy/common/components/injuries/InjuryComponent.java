@@ -25,9 +25,9 @@ public class InjuryComponent implements IInjuryComponent, AutoSyncedComponent
 	@Override
 	public void readFromNbt(CompoundTag tag)
 	{
+		m_injuries.clear();
 		if (tag.contains("injuries"))
 		{
-			m_injuries.clear();
 			ListTag list = tag.getList("injuries", 10);
 			list.forEach((iTag) -> {
 				CompoundTag cTag =(CompoundTag)iTag;
@@ -93,7 +93,6 @@ public class InjuryComponent implements IInjuryComponent, AutoSyncedComponent
 	@Override
 	public void AddInjury(IInjury injury, boolean trigger)
 	{
-
 		IInjury lastMapping = m_injuries.put(injury.GetIdentifier(), injury);
 		if (trigger && lastMapping == null)
 			injury.OnStartInjury();

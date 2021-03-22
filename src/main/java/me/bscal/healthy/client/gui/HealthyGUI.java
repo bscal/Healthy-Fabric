@@ -8,13 +8,12 @@ import io.github.cottonmc.cotton.gui.widget.data.*;
 import me.bscal.healthy.Healthy;
 import me.bscal.healthy.client.HealthyClient;
 import me.bscal.healthy.common.components.health.HealthProvider;
-import me.bscal.healthy.common.components.injuries.IInjury;
-import me.bscal.healthy.common.components.injuries.IInjuryComponent;
-import me.bscal.healthy.common.components.injuries.InjuryComponent;
-import me.bscal.healthy.common.components.injuries.InjuryProvider;
+import me.bscal.healthy.common.components.injuries.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.resource.language.I18n;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
 public class HealthyGUI extends LightweightGuiDescription
@@ -56,10 +55,11 @@ public class HealthyGUI extends LightweightGuiDescription
 		IInjuryComponent injuries = InjuryProvider.INJURY.get(MinecraftClient.getInstance().player);
 		int x = 0;
 		int y = 0;
-		//for (IInjury injury : injuries.GetInjuries().values())
-		for (int i = 0; i < 30; i++)
+		for (IInjury injury : injuries.GetInjuries().values())
+		//for (int i = 0; i < 30; i++)
 		{
-			WSprite sprite = new WSprite(BAR);
+			WSpriteTooltip sprite = new WSpriteTooltip(BAR);
+			sprite.setTooltipData(injury.GetDescription());
 
 			float r = Healthy.RAND.nextFloat();
 

@@ -3,6 +3,8 @@ package me.bscal.healthy.common.components.injuries;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
 public interface IInjury
@@ -52,6 +54,11 @@ public interface IInjury
 	 * Sets duration in ticks
 	 */
 	void SetDuration(int dur);
+
+	/**
+	 * Returns description for the injuries tooltip
+	 */
+	Text[] GetDescription();
 
 	/**
 	 * Source of damage if any.
