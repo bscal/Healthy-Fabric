@@ -76,11 +76,7 @@ public class Heal extends AbstractBuff
 	@Override
 	public void Update(LivingEntity entity)
 	{
-		if (!finished)
-		{
-			entity.heal(healingPerUpdate);
-			UpdateDuration(entity);
-		}
+		UpdateDuration(entity);
 
 		if (remainingDuration <= 0)
 			finished = true;

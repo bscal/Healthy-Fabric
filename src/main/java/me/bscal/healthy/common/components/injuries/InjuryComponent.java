@@ -35,7 +35,6 @@ public class InjuryComponent implements IInjuryComponent, AutoSyncedComponent
 					IInjury injury = regInjury.MakeNew(m_provider);
 					injury.Read(cTag);
 					m_injuries.put(injury.GetIdentifier(), injury);
-					Healthy.LOGGER.info("reading");
 				});
 			});
 		}
@@ -49,7 +48,6 @@ public class InjuryComponent implements IInjuryComponent, AutoSyncedComponent
 			ListTag list = new ListTag();
 			for (IInjury injury : m_injuries.values())
 			{
-				Healthy.LOGGER.info("writing");
 				CompoundTag writer = new CompoundTag();
 				injury.Write(writer);
 				list.add(writer);

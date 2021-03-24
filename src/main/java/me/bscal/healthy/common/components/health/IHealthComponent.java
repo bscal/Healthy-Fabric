@@ -40,14 +40,9 @@ public interface IHealthComponent extends ComponentV3
 	 */
 	boolean CanReceiveHealing();
 
-	void AddBuff(IBuff buff);
+	void SetHealingModifier(float mod);
 
-	List<IBuff> GetBuffs();
+	float GetHealingModifier();
 
-	IBuff[] GetBuff(String name);
-
-	Optional<IBuff> GetByKey(String key);
-
-	IBuff GetBuffByIndex(int index);
 
 }

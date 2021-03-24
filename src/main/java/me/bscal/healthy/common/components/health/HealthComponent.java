@@ -18,9 +18,9 @@ public class HealthComponent implements IHealthComponent, AutoSyncedComponent
 
 	private final PlayerEntity provider;
 	private Heal m_heal = Heal.ZERO;
-	private boolean m_canReceiveHealing = true;
+	private boolean m_canReceiveNewHeal;
 
-	private final List<IBuff> m_buffs = new ArrayList<>();
+	private float m_healingModifier = 1.0f;
 
 	public HealthComponent(PlayerEntity provider)
 	{
@@ -30,10 +30,10 @@ public class HealthComponent implements IHealthComponent, AutoSyncedComponent
 	@Override
 	public void AddHealing(Heal heal)
 	{
-		if (!provider.getEntityWorld().isClient && m_canReceiveHealing)
+		if (!provider.getEntityWorld().isClient && m_canReceiveNewHeal)
 		{
 			m_heal = heal;
-			m_canReceiveHealing = false;
+			m_canReceiveNewHeal = false;
 			HealthProvider.HEALTH.sync(provider);
 		}
 	}
@@ -41,15 +41,22 @@ public class HealthComponent implements IHealthComponent, AutoSyncedComponent
 	@Override
 	public void UpdateHealth(LivingEntity entity)
 	{
-		if (m_heal != null && m_heal.CanUpdate(entity))
+		if (m_heal == null)
+			return;
+
+		if (m_heal.CanUpdate(entity))
 		{
 			m_heal.Update(entity);
 
-			if (m_heal.finished)
-				m_canReceiveHealing = true;
+			entity.heal(m_heal.healingPerUpdate * Math.max(0, m_healingModifier));
 
 			HealthProvider.HEALTH.sync(provider);
 		}
+
+		 if (m_heal.finished)
+		 {
+			 m_canReceiveNewHeal = true;
+		 }
 	}
 
 	@Override
@@ -62,7 +69,7 @@ public class HealthComponent implements IHealthComponent, AutoSyncedComponent
 	public void StopHealing()
 	{
 		m_heal = Heal.ZERO;
-		m_canReceiveHealing = true;
+		m_canReceiveNewHeal = true;
 	}
 
 	@Override
@@ -74,50 +81,25 @@ public class HealthComponent implements IHealthComponent, AutoSyncedComponent
 	@Override
 	public boolean CanReceiveHealing()
 	{
-		return m_canReceiveHealing;
+		return m_canReceiveNewHeal;
 	}
 
 	@Override
-	public void AddBuff(IBuff buff)
+	public void SetHealingModifier(float mod)
 	{
-		if (buff != null && !buff.IsFinished())
-		{
-			m_buffs.add(buff);
-		}
+		m_healingModifier = mod;
 	}
 
 	@Override
-	public List<IBuff> GetBuffs()
+	public float GetHealingModifier()
 	{
-		return m_buffs;
-	}
-
-	@Override
-	public IBuff[] GetBuff(String name)
-	{
-		return m_buffs.stream().filter((buff) -> buff.GetName().equals(name)).toArray(IBuff[]::new);
-	}
-
-	@Override
-	public Optional<IBuff> GetByKey(String key)
-	{
-		for (IBuff buff : m_buffs)
-		{
-			if (buff.GetKey().equals(key))
-				return Optional.of(buff);
-		}
-		return Optional.empty();
-	}
-
-	@Override
-	public IBuff GetBuffByIndex(int index)
-	{
-		return m_buffs.get(index);
+		return m_healingModifier;
 	}
 
 	@Override
 	public void readFromNbt(CompoundTag tag)
 	{
+		m_canReceiveNewHeal = tag.getBoolean("canReceiveNewHeal");
 		m_heal.Read((CompoundTag) tag.get(HP_REGEN_KEY));
 	}
 
@@ -125,10 +107,8 @@ public class HealthComponent implements IHealthComponent, AutoSyncedComponent
 	public void writeToNbt(CompoundTag tag)
 	{
 		CompoundTag healTag = new CompoundTag();
+		healTag.putBoolean("canReceiveNewHeal", m_canReceiveNewHeal);
 		m_heal.Write(healTag);
 		tag.put(HP_REGEN_KEY, healTag);
 	}
-
-
-
 }
