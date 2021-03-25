@@ -4,9 +4,10 @@
   "package": "me.bscal.healthy.common.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "CampfireBlockEntityMixin",
     "HungerManagerAccessor",
     "ModelLoaderMixin",
-    "PlayerEntityMixin",
+    "PlayerEntityMixin"
   ],
   "client": [
   ],
