@@ -19,6 +19,7 @@ repositories {
         name = "CottonMC"
         url = "https://server.bbkr.space/artifactory/libs-release"
     }
+    maven { url 'https://raw.githubusercontent.com/Devan-Kerman/Devan-Repo/master/' }
     maven { url 'https://jitpack.io' }
     maven { url "https://maven.shedaniel.me/" }
     mavenCentral()
@@ -51,6 +52,8 @@ dependencies {
     // Replace Tag with the current version you can find above
     modImplementation("com.gitlab.Lortseam:completeconfig:0.13.1")
     include("com.gitlab.Lortseam:completeconfig:0.13.1")
+
+    modImplementation group: 'net.devtech', name: 'arrp', version: '0.3.9'
 
 }
 
