@@ -53,8 +53,6 @@ dependencies {
     modImplementation("com.gitlab.Lortseam:completeconfig:0.13.1")
     include("com.gitlab.Lortseam:completeconfig:0.13.1")
 
-    modImplementation group: 'net.devtech', name: 'arrp', version: '0.3.9'
-
 }
 
 processResources {
@@ -109,3 +107,4 @@ publishing {
         // mavenLocal()
     }
 }
+

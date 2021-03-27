@@ -6,7 +6,6 @@
   "mixins": [
     "CampfireBlockEntityMixin",
     "HungerManagerAccessor",
-    "ModelLoaderMixin",
     "PlayerEntityMixin"
   ],
   "client": [

@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "healthy:block/unlit_torch"
+    "layer0": "healthy:item/bandage"
   }
 }
