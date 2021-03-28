@@ -13,5 +13,6 @@ public class ServerStartedListener implements ServerLifecycleEvents.ServerStarte
 	{
 		Healthy.SetServer(server);
 		server.getGameRules().get(GameRules.NATURAL_REGENERATION).set(true, server);
+		Healthy.LOGGER.info("TICKS = " + server.getGameRules().get(GameRules.RANDOM_TICK_SPEED));
 	}
 }
