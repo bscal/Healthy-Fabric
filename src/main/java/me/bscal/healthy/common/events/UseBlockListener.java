@@ -31,7 +31,7 @@ public class UseBlockListener implements UseBlockCallback
 		boolean isFlintAndSteel = handId.toString().equals("minecraft:flint_and_steel");
 		boolean isIgniter = handId.toString().equals("minecraft:stick") || isFlintAndSteel;
 
-		if (!player.isSpectator() && state.getBlock().isIn(BlockTags.CAMPFIRES) && (isIgniter || HealthyConfig.RootGroup.CampfireItemsGroup.burnableItems.contains(handId.toString())))
+		if (!player.isSpectator() && state.isIn(BlockTags.CAMPFIRES) && (isIgniter || HealthyConfig.RootGroup.CampfireItemsGroup.burnableItems.contains(handId.toString())))
 		{
 			IBurnableCampfireBlockEntity campfire = (IBurnableCampfireBlockEntity) entity;
 			boolean lit = campfire.isLit();

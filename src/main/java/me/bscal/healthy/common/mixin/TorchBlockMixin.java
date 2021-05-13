@@ -45,7 +45,7 @@ public abstract class TorchBlockMixin extends Block
 	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random)
 	{
 		//boolean isWallTorch = state.getBlock().is(Blocks.WALL_TORCH);
-		if (state.getBlock().is(Blocks.TORCH))
+		if (state.isOf(Blocks.TORCH))
 		{
 			int age = state.get(PROP);
 

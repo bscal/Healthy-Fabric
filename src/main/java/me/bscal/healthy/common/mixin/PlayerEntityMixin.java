@@ -43,7 +43,7 @@ abstract class PlayerEntityMixin
 		HungerManagerAccessor hungerAccessor = (HungerManagerAccessor) hungerManager;
 		// accessor fields
 		final float exhaustion = hungerAccessor.GetExhaustion();
-		final int foodStarvationTimer = hungerAccessor.GetFoodStarvationTimer();
+		final int foodStarvationTimer = hungerAccessor.GetFoodTickTimer();
 		// manager fields
 		final int foodLevel = hungerManager.getFoodLevel();
 		final float saturationLevel = hungerManager.getSaturationLevel();
@@ -74,40 +74,40 @@ abstract class PlayerEntityMixin
 
 		if (bl && saturationLevel > 0.0F && player.canFoodHeal() && foodLevel >= 20)
 		{
-			hungerAccessor.SetFoodStarvationTimer(foodStarvationTimer + 1);
+			hungerAccessor.SetFoodTickTimer(foodStarvationTimer + 1);
 			if (foodStarvationTimer >= 10)
 			{
 				float f = Math.min(saturationLevel, 6.0F);
 				player.heal(f / 6.0F);
 				hungerManager.addExhaustion(f);
-				hungerAccessor.SetFoodStarvationTimer(0);
+				hungerAccessor.SetFoodTickTimer(0);
 			}
 		}
 		else if (bl && foodLevel >= 18 && player.canFoodHeal())
 		{
-			hungerAccessor.SetFoodStarvationTimer(foodStarvationTimer + 1);
+			hungerAccessor.SetFoodTickTimer(foodStarvationTimer + 1);
 			if (foodStarvationTimer >= 80)
 			{
 				player.heal(1.0F);
 				hungerManager.addExhaustion(6.0F);
-				hungerAccessor.SetFoodStarvationTimer(0);
+				hungerAccessor.SetFoodTickTimer(0);
 			}
 		}
 		else if (foodLevel <= 0)
 		{
-			hungerAccessor.SetFoodStarvationTimer(foodStarvationTimer + 1);
+			hungerAccessor.SetFoodTickTimer(foodStarvationTimer + 1);
 			if (foodStarvationTimer >= 80)
 			{
 				if (player.getHealth() > 10.0F || difficulty == Difficulty.HARD || player.getHealth() > 1.0F && difficulty == Difficulty.NORMAL)
 				{
 					player.damage(DamageSource.STARVE, 1.0F);
 				}
-				hungerAccessor.SetFoodStarvationTimer(0);
+				hungerAccessor.SetFoodTickTimer(0);
 			}
 		}
 		else
 		{
-			hungerAccessor.SetFoodStarvationTimer(0);
+			hungerAccessor.SetFoodTickTimer(0);
 		}
 	}
 

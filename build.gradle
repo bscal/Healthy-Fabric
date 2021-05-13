@@ -22,6 +22,8 @@ repositories {
     maven { url 'https://raw.githubusercontent.com/Devan-Kerman/Devan-Repo/master/' }
     maven { url 'https://jitpack.io' }
     maven { url "https://maven.shedaniel.me/" }
+    maven { url "https://maven.terraformersmc.com/" }
+
     mavenCentral()
 }
 
@@ -38,20 +40,20 @@ dependencies {
     // You may need to force-disable transitiveness on them.
 
     // Replace modImplementation with modApi if you expose components in your own API
-    modApi "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:2.7.13"
+    modApi "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${project.cardinal_components_version}"
     //include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:2.7.13"
-    modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:2.7.13"
-    include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:2.7.13"
+    modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${project.cardinal_components_version}"
+    include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${project.cardinal_components_version}"
 
-    modImplementation include("io.github.cottonmc:LibGui:3.3.5+1.16.5")
+    modImplementation include("io.github.cottonmc:LibGui:4.0.0-alpha.1+21w11a")
 
     modApi("me.shedaniel.cloth:cloth-config-fabric:4.11.15") {
         exclude(group: "net.fabricmc.fabric-api")
     }
 
     // Replace Tag with the current version you can find above
-    modImplementation("com.gitlab.Lortseam:completeconfig:0.13.1")
-    include("com.gitlab.Lortseam:completeconfig:0.13.1")
+    modImplementation("com.gitlab.Lortseam:completeconfig:0.15.0")
+    include("com.gitlab.Lortseam:completeconfig:0.15.0")
 
 }
 

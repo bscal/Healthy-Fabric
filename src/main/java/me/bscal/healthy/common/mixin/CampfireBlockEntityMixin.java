@@ -6,10 +6,13 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.block.entity.CampfireBlockEntity;
 import net.minecraft.item.Item;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -18,46 +21,75 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Objects;
 
 @Mixin(CampfireBlockEntity.class)
-public abstract class CampfireBlockEntityMixin implements IBurnableCampfireBlockEntity
+public abstract class CampfireBlockEntityMixin implements IBurnableCampfireBlockEntity, CampfireBlockEntityAccessor
 {
 
 	/**
 	 * Amount of ticks the fire should be lit
 	 */
+	@Unique
 	private int m_fireLitTicks;
 
 	/**
 	 * Injections
 	 */
 
-	@Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/entity/CampfireBlockEntity;updateItemsBeingCooked()V"))
-	public void tick(CallbackInfo cb)
+	@Inject(method = "litServerTick", at = @At(value = "HEAD"))
+	private static void OnLitServerTick(World world, BlockPos pos, BlockState state,
+			CampfireBlockEntity campfire, CallbackInfo ci)
 	{
-		CampfireBlockEntity blockEntity = (CampfireBlockEntity) (Object) this;
-		if (!Objects.requireNonNull(blockEntity.getWorld()).isClient)
+		CampfireBlockEntityAccessor campfireAccessor = (CampfireBlockEntityAccessor)campfire;
+		if (!world.isClient())
 		{
-			BlockState state = blockEntity.getCachedState();
-			if (state.get(Properties.LIT))
+			int ticks = campfireAccessor.GetTicks();
+			campfireAccessor.SetTicks(ticks--);
+			if (ticks < 0)
 			{
-				m_fireLitTicks--;
-				if (m_fireLitTicks < 0)
-				{
-					blockEntity.getWorld().setBlockState(blockEntity.getPos(), state.with(Properties.LIT, false), 11);
-				}
+				world.setBlockState(campfire.getPos(), state.with(Properties.LIT, false), 11);
 			}
-			else if (m_fireLitTicks > 0)
-				m_fireLitTicks = 0;
 		}
 	}
 
-	@Inject(method = "fromTag", at = @At(value = "RETURN"))
-	public void fromTag(BlockState state, CompoundTag tag, CallbackInfo cb)
+	@Inject(method = "unlitServerTick", at = @At(value = "HEAD"))
+	private static void OnUnlitServerTick(World world, BlockPos pos, BlockState state,
+			CampfireBlockEntity campfire, CallbackInfo ci)
+	{
+		CampfireBlockEntityAccessor campfireAccessor = (CampfireBlockEntityAccessor)campfire;
+		if (!world.isClient() && campfireAccessor.GetTicks() > 0)
+		{
+			campfireAccessor.SetTicks(0);
+		}
+	}
+
+	// SNAPSHOT BROKE THIS
+//	@Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/entity/CampfireBlockEntity;updateItemsBeingCooked()V"))
+//	public void tick(CallbackInfo cb)
+//	{
+//		CampfireBlockEntity blockEntity = (CampfireBlockEntity) (Object) this;
+//		if (!Objects.requireNonNull(blockEntity.getWorld()).isClient)
+//		{
+//			BlockState state = blockEntity.getCachedState();
+//			if (state.get(Properties.LIT))
+//			{
+//				m_fireLitTicks--;
+//				if (m_fireLitTicks < 0)
+//				{
+//					blockEntity.getWorld().setBlockState(blockEntity.getPos(), state.with(Properties.LIT, false), 11);
+//				}
+//			}
+//			else if (m_fireLitTicks > 0)
+//				m_fireLitTicks = 0;
+//		}
+//	}
+
+	@Inject(method = "readNbt", at = @At(value = "RETURN"))
+	public void fromTag(NbtCompound tag, CallbackInfo cb)
 	{
 		m_fireLitTicks = tag.getInt("FireLitTicks");
 	}
 
-	@Inject(method="toTag", at = @At(value = "TAIL"))
-	public void toTag(CompoundTag tag, CallbackInfoReturnable<CompoundTag> cb)
+	@Inject(method="writeNbt", at = @At(value = "TAIL"))
+	public void toTag(NbtCompound tag, CallbackInfoReturnable<NbtCompound> cb)
 	{
 		tag.putInt("FireLitTicks", m_fireLitTicks);
 	}
@@ -105,5 +137,17 @@ public abstract class CampfireBlockEntityMixin implements IBurnableCampfireBlock
 			}
 		}
 		return ActionResult.FAIL;
+	}
+
+	@Unique
+	public int GetTicks()
+	{
+		return m_fireLitTicks;
+	}
+
+	@Unique
+	public void SetTicks(int i)
+	{
+		m_fireLitTicks = i;
 	}
 }

@@ -17,11 +17,11 @@ public interface HungerManagerAccessor
 	@Accessor("prevFoodLevel")
 	public int GetPrevFoodLevel();
 
-	@Accessor("foodStarvationTimer")
-	public void SetFoodStarvationTimer(int foodStarvationTimer);
+	@Accessor("foodTickTimer")
+	public void SetFoodTickTimer(int foodStarvationTimer);
 
-	@Accessor("foodStarvationTimer")
-	public int GetFoodStarvationTimer();
+	@Accessor("foodTickTimer")
+	public int GetFoodTickTimer();
 
 	@Accessor("exhaustion")
 	public void SetExhaustion(float exhaustion);
