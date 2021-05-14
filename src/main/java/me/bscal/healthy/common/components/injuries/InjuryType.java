@@ -2,7 +2,7 @@ package me.bscal.healthy.common.components.injuries;
 
 import me.bscal.healthy.Healthy;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 
 public abstract class InjuryType implements IInjury
@@ -60,7 +60,7 @@ public abstract class InjuryType implements IInjury
 	}
 
 	@Override
-	public void Write(CompoundTag tag)
+	public void Write(NbtCompound tag)
 	{
 		tag.putString("id", id.toString());
 		tag.putInt("dur", duration);
@@ -68,7 +68,7 @@ public abstract class InjuryType implements IInjury
 	}
 
 	@Override
-	public void Read(CompoundTag tag)
+	public void Read(NbtCompound tag)
 	{
 		id = new Identifier(tag.getString("id"));
 		duration = tag.getInt("dur");

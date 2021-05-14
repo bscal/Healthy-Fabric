@@ -2,13 +2,17 @@ package me.bscal.healthy.common.mixin;
 
 import me.bscal.healthy.Healthy;
 import me.bscal.healthy.IBurnableCampfireBlockEntity;
+import me.bscal.healthy.common.mixin_accessors.CampfireBlockEntityAccessor;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CampfireBlock;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.CampfireBlockEntity;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Clearable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,7 +25,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Objects;
 
 @Mixin(CampfireBlockEntity.class)
-public abstract class CampfireBlockEntityMixin implements IBurnableCampfireBlockEntity, CampfireBlockEntityAccessor
+public abstract class CampfireBlockEntityMixin extends BlockEntity implements Clearable, IBurnableCampfireBlockEntity,
+		CampfireBlockEntityAccessor
 {
 
 	/**
@@ -29,6 +34,11 @@ public abstract class CampfireBlockEntityMixin implements IBurnableCampfireBlock
 	 */
 	@Unique
 	private int m_fireLitTicks;
+
+	public CampfireBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state)
+	{
+		super(type, pos, state);
+	}
 
 	/**
 	 * Injections
@@ -140,12 +150,14 @@ public abstract class CampfireBlockEntityMixin implements IBurnableCampfireBlock
 	}
 
 	@Unique
+	@Override
 	public int GetTicks()
 	{
 		return m_fireLitTicks;
 	}
 
 	@Unique
+	@Override
 	public void SetTicks(int i)
 	{
 		m_fireLitTicks = i;

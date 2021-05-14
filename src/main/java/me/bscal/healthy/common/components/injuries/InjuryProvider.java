@@ -5,7 +5,7 @@ import dev.onyxstudios.cca.api.v3.component.ComponentRegistryV3;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
 import me.bscal.healthy.Healthy;
-import nerdhub.cardinal.components.api.util.RespawnCopyStrategy;
+import dev.onyxstudios.cca.api.v3.entity.RespawnCopyStrategy;
 import net.minecraft.util.Identifier;
 
 public class InjuryProvider implements EntityComponentInitializer
@@ -17,9 +17,7 @@ public class InjuryProvider implements EntityComponentInitializer
 	@Override
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry)
 	{
-		registry.registerForPlayers(INJURY, InjuryComponent::new,
-				RespawnCopyStrategy.ALWAYS_COPY);
+		registry.registerForPlayers(INJURY, InjuryComponent::new, RespawnCopyStrategy.ALWAYS_COPY);
 	}
-
 
 }

@@ -1,6 +1,6 @@
 package me.bscal.healthy.common.components.buff;
 
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 
 public abstract class AbstractBuff implements IBuff
 {
@@ -40,14 +40,14 @@ public abstract class AbstractBuff implements IBuff
 	}
 
 	@Override
-	public void Write(CompoundTag tag)
+	public void Write(NbtCompound tag)
 	{
 		tag.putString("name", name);
 		tag.putInt("id", id);
 	}
 
 	@Override
-	public void Read(CompoundTag tag)
+	public void Read(NbtCompound tag)
 	{
 		name = tag.getString("name");
 		id = tag.getInt("id");

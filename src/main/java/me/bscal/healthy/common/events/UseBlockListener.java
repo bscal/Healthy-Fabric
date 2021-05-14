@@ -2,12 +2,9 @@ package me.bscal.healthy.common.events;
 
 import me.bscal.healthy.Healthy;
 import me.bscal.healthy.IBurnableCampfireBlockEntity;
-import me.bscal.healthy.common.config.HealthyConfig;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.CampfireBlock;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.CampfireBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -31,7 +28,7 @@ public class UseBlockListener implements UseBlockCallback
 		boolean isFlintAndSteel = handId.toString().equals("minecraft:flint_and_steel");
 		boolean isIgniter = handId.toString().equals("minecraft:stick") || isFlintAndSteel;
 
-		if (!player.isSpectator() && state.isIn(BlockTags.CAMPFIRES) && (isIgniter || HealthyConfig.RootGroup.CampfireItemsGroup.burnableItems.contains(handId.toString())))
+		if (!player.isSpectator() && state.isIn(BlockTags.CAMPFIRES) && (isIgniter))
 		{
 			IBurnableCampfireBlockEntity campfire = (IBurnableCampfireBlockEntity) entity;
 			boolean lit = campfire.isLit();

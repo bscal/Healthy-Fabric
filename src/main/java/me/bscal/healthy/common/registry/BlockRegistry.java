@@ -13,9 +13,9 @@ public class BlockRegistry
 {
 
 	public static final Block UNLIT_TORCH = new UnlitTorch(
-			FabricBlockSettings.of(Material.SUPPORTED));
+			FabricBlockSettings.of(Material.STRUCTURE_VOID));
 	public static final Block UNLIT_WALL_TORCH = new UnlitWallTorch(
-			FabricBlockSettings.of(Material.SUPPORTED));
+			FabricBlockSettings.of(Material.STRUCTURE_VOID));
 	public static void Register()
 	{
 		Registry.register(Registry.BLOCK, new Identifier(Healthy.MOD_ID, "unlit_torch"), UNLIT_TORCH);

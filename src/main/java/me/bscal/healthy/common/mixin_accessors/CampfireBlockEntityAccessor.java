@@ -1,4 +1,4 @@
-package me.bscal.healthy.common.mixin;
+package me.bscal.healthy.common.mixin_accessors;
 
 public interface CampfireBlockEntityAccessor
 {

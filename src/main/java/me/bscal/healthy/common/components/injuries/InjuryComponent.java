@@ -1,10 +1,9 @@
 package me.bscal.healthy.common.components.injuries;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import me.bscal.healthy.Healthy;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.util.Identifier;
 
 import java.util.HashMap;
@@ -23,14 +22,14 @@ public class InjuryComponent implements IInjuryComponent, AutoSyncedComponent
 	}
 
 	@Override
-	public void readFromNbt(CompoundTag tag)
+	public void readFromNbt(NbtCompound tag)
 	{
 		m_injuries.clear();
 		if (tag.contains("injuries"))
 		{
-			ListTag list = tag.getList("injuries", 10);
+			NbtList list = tag.getList("injuries", 10);
 			list.forEach((iTag) -> {
-				CompoundTag cTag =(CompoundTag)iTag;
+				NbtCompound cTag =(NbtCompound)iTag;
 				InjuryRegistry.GetType(new Identifier(cTag.getString("id"))).ifPresent((regInjury) -> {
 					IInjury injury = regInjury.MakeNew(m_provider);
 					injury.Read(cTag);
@@ -41,14 +40,14 @@ public class InjuryComponent implements IInjuryComponent, AutoSyncedComponent
 	}
 
 	@Override
-	public void writeToNbt(CompoundTag tag)
+	public void writeToNbt(NbtCompound tag)
 	{
 		if (m_injuries.size() > 0)
 		{
-			ListTag list = new ListTag();
+			NbtList list = new NbtList();
 			for (IInjury injury : m_injuries.values())
 			{
-				CompoundTag writer = new CompoundTag();
+				NbtCompound writer = new NbtCompound();
 				injury.Write(writer);
 				list.add(writer);
 			}

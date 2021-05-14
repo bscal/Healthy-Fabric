@@ -1,7 +1,7 @@
 package me.bscal.healthy.common.components.buff;
 
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 
 public interface IBuff
 {
@@ -28,8 +28,8 @@ public interface IBuff
 
 	void UpdateDuration(LivingEntity entity);
 
-	void Read(CompoundTag tag);
+	void Read(NbtCompound tag);
 
-	void Write(CompoundTag tag);
+	void Write(NbtCompound tag);
 
 }

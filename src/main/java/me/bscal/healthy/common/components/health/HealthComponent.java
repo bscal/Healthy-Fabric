@@ -1,15 +1,9 @@
 package me.bscal.healthy.common.components.health;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import me.bscal.healthy.Healthy;
-import me.bscal.healthy.common.components.buff.IBuff;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundTag;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import net.minecraft.nbt.NbtCompound;
 
 public class HealthComponent implements IHealthComponent, AutoSyncedComponent
 {
@@ -97,16 +91,16 @@ public class HealthComponent implements IHealthComponent, AutoSyncedComponent
 	}
 
 	@Override
-	public void readFromNbt(CompoundTag tag)
+	public void readFromNbt(NbtCompound tag)
 	{
 		m_canReceiveNewHeal = tag.getBoolean("canReceiveNewHeal");
-		m_heal.Read((CompoundTag) tag.get(HP_REGEN_KEY));
+		m_heal.Read((NbtCompound) tag.get(HP_REGEN_KEY));
 	}
 
 	@Override
-	public void writeToNbt(CompoundTag tag)
+	public void writeToNbt(NbtCompound tag)
 	{
-		CompoundTag healTag = new CompoundTag();
+		NbtCompound healTag = new NbtCompound();
 		healTag.putBoolean("canReceiveNewHeal", m_canReceiveNewHeal);
 		m_heal.Write(healTag);
 		tag.put(HP_REGEN_KEY, healTag);

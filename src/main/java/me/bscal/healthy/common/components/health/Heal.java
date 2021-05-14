@@ -3,7 +3,7 @@ package me.bscal.healthy.common.components.health;
 import me.bscal.healthy.Healthy;
 import me.bscal.healthy.common.components.buff.AbstractBuff;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 
 public class Heal extends AbstractBuff
 {
@@ -89,7 +89,7 @@ public class Heal extends AbstractBuff
 	}
 
 	@Override
-	public void Write(CompoundTag tag)
+	public void Write(NbtCompound tag)
 	{
 		super.Write(tag);
 		tag.putInt("duration", duration);
@@ -100,7 +100,7 @@ public class Heal extends AbstractBuff
 	}
 
 	@Override
-	public void Read(CompoundTag tag)
+	public void Read(NbtCompound tag)
 	{
 		super.Read(tag);
 		duration = tag.getInt("duration");

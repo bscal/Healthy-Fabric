@@ -1,9 +1,8 @@
 package me.bscal.healthy.common.components.injuries.injurytypes;
 
-import me.bscal.healthy.Healthy;
 import me.bscal.healthy.common.components.injuries.IInjury;
 import me.bscal.healthy.common.components.injuries.InjuryRegistry;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
@@ -82,14 +81,14 @@ public class HeavyBleed extends EntityBleedInjury
 	}
 
 	@Override
-	public void Read(CompoundTag tag)
+	public void Read(NbtCompound tag)
 	{
 		super.Read(tag);
 		tag.putInt("bandageCounter", m_bandageCounter);
 	}
 
 	@Override
-	public void Write(CompoundTag tag)
+	public void Write(NbtCompound tag)
 	{
 		super.Write(tag);
 		m_bandageCounter = tag.getInt("bandageCounter");

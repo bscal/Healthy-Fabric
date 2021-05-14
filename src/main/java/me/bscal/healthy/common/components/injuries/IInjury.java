@@ -2,9 +2,8 @@ package me.bscal.healthy.common.components.injuries;
 
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
 public interface IInjury
@@ -65,7 +64,7 @@ public interface IInjury
 	 */
 	DamageSource GetDamageSource();
 
-	void Write(CompoundTag tag);
+	void Write(NbtCompound tag);
 
-	void Read(CompoundTag tag);
+	void Read(NbtCompound tag);
 }
