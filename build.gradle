@@ -40,6 +40,7 @@ dependencies {
     modApi("me.shedaniel.cloth:cloth-config-fabric:4.11.15") {
         exclude(group: "net.fabricmc.fabric-api")
     }
+    modImplementation include("com.oroarmor:oro-config-fabric:${project.oroconfig_version}")
     //modImplementation("com.gitlab.Lortseam:completeconfig:0.15.0")
     //include("com.gitlab.Lortseam:completeconfig:0.15.0")
 }
