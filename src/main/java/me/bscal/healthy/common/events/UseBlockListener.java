@@ -7,8 +7,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.tag.BlockTags;
+import net.minecraft.tag.ItemTags;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
@@ -24,16 +26,16 @@ public class UseBlockListener implements UseBlockCallback
 		BlockState state = world.getBlockState(hitResult.getBlockPos());
 		BlockEntity entity = world.getBlockEntity(hitResult.getBlockPos());
 		ItemStack stack = player.getStackInHand(hand);
-		Identifier handId = Registry.ITEM.getId(stack.getItem());
-		boolean isFlintAndSteel = handId.toString().equals("minecraft:flint_and_steel");
-		boolean isIgniter = handId.toString().equals("minecraft:stick") || isFlintAndSteel;
+		boolean isFlintAndSteel = stack.isOf(Items.FLINT_AND_STEEL);
+		boolean isIgniter = stack.isOf(Items.STICK) || isFlintAndSteel;
+		boolean isBurnable = stack.isOf(Items.STICK) || stack.isIn(ItemTags.LOGS_THAT_BURN);
 
-		if (!player.isSpectator() && state.isIn(BlockTags.CAMPFIRES) && (isIgniter))
+		if (!player.isSpectator() && state.isIn(BlockTags.CAMPFIRES) && (isIgniter || isBurnable))
 		{
 			IBurnableCampfireBlockEntity campfire = (IBurnableCampfireBlockEntity) entity;
 			boolean lit = campfire.isLit();
 
-			if (!lit && !isIgniter || lit && isFlintAndSteel)
+			if (!lit && !isIgniter || lit && !isBurnable)
 				return ActionResult.PASS;
 
 			// Logic is done on server. We still want to pass ActionResult.SUCCESS so a block does not

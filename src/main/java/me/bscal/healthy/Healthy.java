@@ -1,7 +1,9 @@
 package me.bscal.healthy;
 
+import com.oroarmor.config.Config;
 import me.bscal.healthy.common.commands.BasicCommands;
 import me.bscal.healthy.common.components.injuries.InjuryRegistry;
+import me.bscal.healthy.common.config.HealthyOroConfig;
 import me.bscal.healthy.common.events.PlayerSleepListener;
 import me.bscal.healthy.common.events.PlayerTickListener;
 import me.bscal.healthy.common.events.ServerStartedListener;
@@ -29,16 +31,19 @@ public class Healthy implements ModInitializer
 	public static final Random RAND = new Random();
 	//public static final RuntimeResourcePack RESOURCE_PACK = RuntimeResourcePack.create(MOD_ID);
 
-	//public static Config CONFIG;
+	public static Config CONFIG = new HealthyOroConfig();
 	private static MinecraftServer m_server;
 
 	@Override
 	public void onInitialize()
 	{
 		//CONFIG = Config.builder(MOD_ID).add(new HealthyConfig()).build();
+		CONFIG.readConfigFromFile();
+		CONFIG.saveConfigToFile();
 
 		//RRPCallback.EVENT.register((list -> list.add(RESOURCE_PACK)));
 		ServerLifecycleEvents.SERVER_STARTED.register(new ServerStartedListener());
+		ServerLifecycleEvents.SERVER_STOPPED.register(instance -> CONFIG.saveConfigToFile());
 		PlayerTickCallback.EVENT.register(new PlayerTickListener());
 		PlayerSleepCallback.EVENT.register(new PlayerSleepListener());
 		UseBlockCallback.EVENT.register(new UseBlockListener());

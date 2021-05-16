@@ -51,7 +51,7 @@ public abstract class CampfireBlockEntityMixin extends BlockEntity implements Cl
 		CampfireBlockEntityAccessor campfireAccessor = (CampfireBlockEntityAccessor)campfire;
 		if (!world.isClient())
 		{
-			int ticks = campfireAccessor.GetTicks();
+			int ticks = campfireAccessor.GetTicks() - 1;
 			campfireAccessor.SetTicks(ticks--);
 			if (ticks < 0)
 			{
